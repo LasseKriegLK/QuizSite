@@ -1,0 +1,243 @@
+:root {
+    --bg1: #0f172a;
+    --bg2: #0b3855;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #0ea5a4;
+    --accent-2: #06b6d4;
+    --radius: 12px;
+    --shadow: 0 8px 24px rgba(2, 6, 23, 0.5);
+    --max-width: 720px;
+    --gap: 16px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+    color: #0b1220;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Centered container */
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+}
+
+/* Header */
+.header {
+    color: #e6eef6;
+    text-align: center;
+    margin-bottom: var(--gap);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+}
+
+.lead {
+    margin: 8px 0 0;
+    color: #cfefff;
+    font-size: 0.95rem;
+}
+
+/* Card */
+.card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+}
+
+/* Form */
+.form {
+    display: grid;
+    gap: 12px;
+}
+
+.form label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e6e9ef;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow .15s, border-color .15s;
+}
+
+.form input:focus {
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.08);
+    border-color: var(--accent-2);
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(14, 165, 164, 0.18);
+    transition: transform .08s ease, box-shadow .12s ease, opacity .12s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px)
+}
+
+.btn-primary:active {
+    transform: translateY(0)
+}
+
+.status {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Answers list */
+.answers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.answer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(14, 165, 164, 0.04), rgba(6, 182, 212, 0.02));
+    border: 1px solid rgba(14, 165, 164, 0.06);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.answer-item.new {
+    animation: pop .32s ease;
+}
+
+.user-badge {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 6px 14px rgba(6, 182, 212, 0.12);
+}
+
+.answer-content {
+    flex: 1;
+}
+
+.answer-name {
+    font-weight: 600;
+    color: #032a2b;
+}
+
+.answer-text {
+    color: var(--muted);
+    margin-top: 3px;
+}
+
+.answer-time {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+/* small screens */
+@media (max-width:520px) {
+    .card {
+        padding: 16px
+    }
+
+    .header h1 {
+        font-size: 1.4rem
+    }
+
+    .user-badge {
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 0.85rem;
+        border-radius: 8px
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch
+    }
+}
+
+/* small entry pop */
+@keyframes pop {
+    from {
+        transform: translateY(6px);
+        opacity: 0
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1
+    }
+}
+.answer-item.changed {
+    animation: flash-red .9s ease;
+}
+
+@keyframes flash-red {
+    0% {
+        background: linear-gradient(90deg, rgba(255,200,200,0.98), rgba(255,170,170,0.96));
+        transform: scale(1.02);
+        box-shadow: 0 8px 24px rgba(255,120,120,0.12);
+    }
+    60% {
+        transform: scale(1.01);
+    }
+    100% {
+        background: linear-gradient(90deg, rgba(14, 165, 164, 0.04), rgba(6, 182, 212, 0.02));
+        transform: none;
+        box-shadow: none;
+    }
+}
