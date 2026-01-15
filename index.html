@@ -2,35 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Site</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="index.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
 </head>
 
 <body>
-    <main class="container">
-        <header class="header">
-            <h1>Quiz Seite</h1>
-        </header>
+    <h1>Quiz</h1>
 
-        <section class="card">
-            <form id="quizForm" onsubmit="submitForm(event)" method="post" class="form">
-                <label for="username">Name</label>
-                <input type="text" id="username" name="username" required>
+    <form id="quizForm">
+        <input id="username" placeholder="Your name" required />
+        <input id="answer" placeholder="Your answer" required />
+        <button type="submit">Submit</button>
+    </form>
 
-                <label for="answer">Antwort</label>
-                <input type="text" id="answer" name="answer" required>
-
-                <div class="actions">
-                    <button type="submit" class="btn-primary">Einlocken</button>
-                    <span id="status" class="status" aria-live="polite"></span>
-                </div>
-            </form>
-        </section>
-    </main>
+    <script src="index.js"></script>
 </body>
 
 </html>
