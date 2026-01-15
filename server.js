@@ -37,7 +37,7 @@ app.get('/answers', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server listening on https://lassekrieglk.github.io/QuizSite`));
 
 // graceful shutdown
 process.on('SIGINT', () => {
