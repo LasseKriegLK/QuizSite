@@ -94,16 +94,15 @@ function render(docSnap) {
         });
     } else {
         const item = state.get(name);
+        item.textContent = name;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
-        
     }
 }
 
 
 const q = query(
     collection(db, "answers"),
-    orderBy("updated_at", "asc")
 );
 
 onSnapshot(q, (snapshot) => {
