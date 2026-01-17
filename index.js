@@ -29,17 +29,14 @@ form.addEventListener('submit', async (e) => {
     const data = docSnap.data();
     const name = nameEl.value.trim();
     const answer = answerEl.value.trim();
-    const status = data.status || "online";
-    const points = data.points || 0;
     if (!name) return alert("Enter a name");
 
     await setDoc(doc(db, "answers", name), {
         name,
         answer,
-        status,
-        points,
         updated_at: serverTimestamp()
-    }, { merge: true
+    }, {
+        merge: true
     });
 
     answerEl.value = "";
