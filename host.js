@@ -37,6 +37,7 @@ async function addPoint(name) {
         points: points + 1,
         updated_at: serverTimestamp()
     }, { merge: true });
+    location.reload();
 }
 
 async function removePoint(name) {
@@ -49,6 +50,7 @@ async function removePoint(name) {
         points: points - 1,
         updated_at: serverTimestamp()
     }, { merge: true });
+    location.reload();
 }
 
 function render(docSnap) {
