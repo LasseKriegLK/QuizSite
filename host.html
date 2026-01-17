@@ -34,9 +34,8 @@
     <div id="counter">
         <button type="button" onClick="onClick()">Click me</button>
         <p>Clicks: <a id="clicks">0</a></p>
-        <p>Time left: <span id="timer"></span> seconds</p>
+        <p>Time left: <span id="timer">10</span> seconds</p>
         <script>
-            const TIMER_INTERVAL_MS = 1000;
             let count = 0;
             function onClick() {
                 count += 1;
@@ -48,7 +47,7 @@
                     } else {
                         alert(`Time's up! You clicked ${count} times.`);
                     }
-                }, TIMER_INTERVAL_MS);
+                }, 1000);
 
             };
         </script>
