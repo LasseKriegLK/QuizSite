@@ -44,8 +44,10 @@ document.addEventListener("visibilitychange", () => {
     if (name) {
         setDoc(doc(db, "answers", name), {
             name,
-            answer: "[left the quiz]",
-            updated_at: serverTimestamp()
+            updated_at: serverTimestamp(),
+            status: document.visibilityState === "visible" ? "online" : "offline"
+        }, {
+            merge: true
         });
     }
 });

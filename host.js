@@ -26,9 +26,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = initializeFirestore(app, {
-    experimentalForceLongPolling: true
-});
+const db = getFirestore(app);
 
 const container = document.getElementById('answers');
 const state = new Map();
@@ -62,6 +60,7 @@ function render(docSnap) {
     const name = data.name;
     const answer = data.answer;
     const points = data.points || 0;
+    const status = data.status || "offline";
 
     if (!state.has(name)) {
         // Create elements
@@ -90,20 +89,34 @@ function render(docSnap) {
         minus.textContent = '-1';
         minus.onclick = () => removePoint(name);
 
-        el.append(title, answerEl, pointsEl, close, plus, minus);
+        const statusEl = document.createElement('span');
+        statusEl.className = 'status ' + status;
+        statusEl.textContent = ` [${status}]`;
+
+        el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
         container.appendChild(el);
 
         // Store all elements in state
-        state.set(name, { el, pointsEl, answerEl });
+        state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
         // Update live
         const item = state.get(name);
+        item.statusEl.className = 'status ' + status;
+        item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
     }
 }
 
-
+window.addEventListener('DOMContentLoaded', () => {
+    onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+            if (change.type === "added" || change.type === "modified") {
+                render(change.doc);
+            }
+        });
+    });
+});
 
 const q = query(
     collection(db, "answers"),
@@ -116,3 +129,4 @@ onSnapshot(q, (snapshot) => {
         }
     });
 });
+
