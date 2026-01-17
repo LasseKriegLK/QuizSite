@@ -39,7 +39,7 @@ form.addEventListener('submit', async (e) => {
     answerEl.value = "";
 });
 
-addEventListener("beforeunload", (event) => {
+window.addEventListener("blur", () => {
     const name = nameEl.value.trim();
     if (name) {
         setDoc(doc(db, "answers", name), {
@@ -48,4 +48,4 @@ addEventListener("beforeunload", (event) => {
             updated_at: serverTimestamp()
         });
     }
- })
+});
