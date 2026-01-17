@@ -93,6 +93,8 @@ function render(docSnap) {
         item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
+        item.el.classList.add('changed');
+        setTimeout(() => el.classList.remove('changed'), 800);
     }
 }
 
