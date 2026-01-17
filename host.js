@@ -10,6 +10,10 @@ import {
     setDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initializeFirestore, enableIndexedDbPersistence } from "firebase/firestore";
+
+
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDuQhrbY3AkVLDTmg6V2c5kCk68sjsnxtc",
@@ -22,7 +26,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true
+});
 
 const container = document.getElementById('answers');
 const state = new Map();
