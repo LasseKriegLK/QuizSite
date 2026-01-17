@@ -108,6 +108,10 @@ function render(docSnap) {
     }
 }
 
+const q = query(
+    collection(db, "answers"),
+);
+
 window.addEventListener('DOMContentLoaded', () => {
     onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach(change => {
@@ -118,15 +122,5 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const q = query(
-    collection(db, "answers"),
-);
 
-onSnapshot(q, (snapshot) => {
-    snapshot.docChanges().forEach(change => {
-        if (change.type === "added" || change.type === "modified") {
-            render(change.doc);
-        }
-    });
-});
 

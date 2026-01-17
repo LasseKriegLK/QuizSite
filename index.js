@@ -39,6 +39,7 @@ form.addEventListener('submit', async (e) => {
     answerEl.value = "";
 });
 
+
 document.addEventListener("visibilitychange", () => {
     const name = nameEl.value.trim();
     if (name) {
