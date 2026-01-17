@@ -51,7 +51,7 @@ function render(docSnap) {
     const name = data.name;
     const answer = data.answer;
     const points = data.points || 0;
-    const status = data.status || "offline";
+    const status = data.status;
 
     if (!state.has(name)) {
         const el = document.createElement('div');
