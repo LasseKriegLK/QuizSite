@@ -57,17 +57,17 @@ function render(docSnap) {
     const answer = data.answer;
     const points = data.points || 0;
 
-    let el;
-
     if (!state.has(name)) {
-        el = document.createElement('div');
+        // Create elements
+        const el = document.createElement('div');
         el.className = 'answer-item';
 
         const title = document.createElement('strong');
         title.textContent = name;
 
-        const text = document.createElement('span');
-        text.textContent = `: ${answer} (Points: `;
+        const answerEl = document.createElement('span');
+        answerEl.className = 'answer';
+        answerEl.textContent = `: ${answer} (Points: `;
 
         const pointsEl = document.createElement('span');
         pointsEl.className = 'points';
@@ -84,21 +84,19 @@ function render(docSnap) {
         minus.textContent = '-1';
         minus.onclick = () => removePoint(name);
 
-        el.append(title, text, pointsEl, close, plus, minus);
-
+        el.append(title, answerEl, pointsEl, close, plus, minus);
         container.appendChild(el);
 
-        state.set(name, {
-            el,
-            pointsEl
-        });
+        // Store all elements in state
+        state.set(name, { el, pointsEl, answerEl });
     } else {
+        // Update live
         const item = state.get(name);
-        item.textContent = name;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
     }
 }
+
 
 
 const q = query(
