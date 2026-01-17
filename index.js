@@ -39,7 +39,7 @@ form.addEventListener('submit', async (e) => {
     answerEl.value = "";
 });
 
-window.addEventListener("blur", () => {
+document.addEventListener("visibilitychange", () => {
     const name = nameEl.value.trim();
     if (name) {
         setDoc(doc(db, "answers", name), {
