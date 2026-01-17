@@ -115,7 +115,7 @@ function render(docSnap) {
 }
 
 const q = query(
-    collection(db, "answers")
+    collection(db, "answers"), orderBy("updated_at", "asc")
 );
 
 
