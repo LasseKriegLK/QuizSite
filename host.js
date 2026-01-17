@@ -122,10 +122,11 @@ const q = query(
 
 
 onSnapshot(q, (snapshot) => {
-    snapshot.docChanges().forEach(change => {
-        if (change.type === "added" || change.type === "modified") {
-            render(change.doc);
-        }
+    container.innerHTML = '';
+    state.clear();
+
+    snapshot.docs.forEach(doc => {
+        render(doc);
     });
 });
 
