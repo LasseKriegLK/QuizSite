@@ -7,7 +7,6 @@ import {
     doc,
     getDoc,
     setDoc,
-    orderBy,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -48,18 +47,16 @@ async function removePoint(name) {
 }
 
 function render(docSnap) {
-    const id = docSnap.id;  // add this
     const data = docSnap.data();
     const name = data.name;
     const answer = data.answer;
     const points = data.points || 0;
     const status = data.status;
 
-    if (!state.has(id)) {  // use ID instead of name
+    if (!state.has(name)) {
         const el = document.createElement('div');
         el.className = 'answer-item';
 
-        // create inner elements...
         const title = document.createElement('strong');
         title.textContent = name;
 
@@ -87,42 +84,46 @@ function render(docSnap) {
         statusEl.textContent = ` [${status}]`;
 
         el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
+        container.appendChild(el);
 
-        // store in state using ID
-        state.set(id, { el, pointsEl, answerEl, statusEl });
-
-        return el;  // return element for appending
+        state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
-        // update existing element
-        const item = state.get(id);
+        const item = state.get(name);
         item.statusEl.className = 'status ' + status;
         item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
+        if (item.answerEl.textContent != `: ${answer} (Points: `) {
+            item.el.classList.remove('default');
+            item.el.classList.add('new');
 
-        // animation logic...
-        return item.el;  // still return element
+            setTimeout(() => {
+                item.el.classList.remove('new');
+                item.el.classList.add('default');
+            }, 1000);
+        }
+        if (item.statusEl.textContent != ` [${status}]`) {
+            item.el.classList.remove('default');
+            item.el.classList.add('changed');
+
+            setTimeout(() => {
+                item.el.classList.remove('changed');
+                item.el.classList.add('default');
+            }, 1000);
+        }
     }
 }
 
 const q = query(
-    collection(db, "answers"), orderBy("updated_at", "asc")
+    collection(db, "answers")
 );
 
 
 
 onSnapshot(q, (snapshot) => {
-    snapshot.docs.forEach(docSnap => {
-        const id = docSnap.id;
-        const item = state.get(id);
-
-        const el = item?.el || render(docSnap);
-
-
-        container.appendChild(el);
+    snapshot.docChanges().forEach(change => {
+        if (change.type === "added" || change.type === "modified") {
+            render(change.doc);
+        }
     });
 });
-
-
-
-
