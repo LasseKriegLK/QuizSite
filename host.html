@@ -39,9 +39,8 @@
             const timerDisplay = document.getElementById("timer");
             const TIMER_INTERVAL_MS = 1000;
             const updateDisplay = seconds => {
-                const formatted = formatTime(seconds);
-                timerDisplay.textContent = formatted;
-                document.title = `Timer: ${formatted}`;
+                timerDisplay.textContent = seconds;
+                document.title = `Timer: ${seconds}`;
             };
             let count = 0;
             function onClick() {
