@@ -93,8 +93,20 @@ function render(docSnap) {
         item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
-        item.el.classList.add('changed');
-        setTimeout(() => el.classList.remove('changed'), 800);
+        if (item.answerEl.textContent != `: ${answer} (Points: `) {
+            item.el.classList.add('new');
+
+            setTimeout(() => {
+                item.el.classList.remove('new');
+            }, 1000);
+        }
+        if (item.statusEl.textContent != ` [${status}]`) {
+            item.el.classList.add('changed');
+
+            setTimeout(() => {
+                item.el.classList.remove('changed');
+            }, 1000);
+        }
     }
 }
 
