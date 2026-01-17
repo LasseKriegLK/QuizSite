@@ -93,26 +93,9 @@ function render(docSnap) {
         item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
-        if (item.answerEl.textContent != `: ${answer} (Points: `) {
-            item.el.classList.remove('default');
-            item.el.classList.add('new');
-
-            setTimeout(() => {
-                item.el.classList.remove('new');
-                item.el.classList.add('default');
-            }, 1000);
-        }
-        if (item.statusEl.textContent != ` [${status}]`) {
-            item.el.classList.remove('default');
-            item.el.classList.add('changed');
-
-            setTimeout(() => {
-                item.el.classList.remove('changed');
-                item.el.classList.add('default');
-            }, 1000);
-        }
     }
 }
+
 
 const q = query(
     collection(db, "answers")
