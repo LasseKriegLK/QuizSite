@@ -37,19 +37,32 @@
         <p>Time left: <span id="timer">10</span> seconds</p>
         <script>
             let count = 0;
+            let timeLeft = 10;
+            let interval = null;
+
             function onClick() {
-                count += 1;
+                count++;
                 document.getElementById('clicks').innerText = count;
-                countdownInterval = setTimeout(() => {
-                    if (timeLeft > 0) {
-                        timeLeft--;
-                        document.getElementById('timer').innerText = timeLeft;
-                    } else {
+                timeLeft = 10;
+                document.getElementById('timer').innerText = timeLeft;
+                if (interval) {
+                    clearInterval(interval);
+                }
+                startTimer();
+            }
+
+            function startTimer() {
+                interval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer').innerText = timeLeft;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        interval = null;
                         alert(`Time's up! You clicked ${count} times.`);
                     }
                 }, 1000);
-
-            };
+            }
         </script>
     </div>
 </body>
