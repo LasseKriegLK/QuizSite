@@ -34,24 +34,29 @@
     <div id="counter">
         <button type="button" onClick="onClick()">Click me</button>
         <p>Clicks: <a id="clicks">0</a></p>
+        <p>Time left: <span id="count">10</span> seconds</p>
         <script>
+            const timerDisplay = document.getElementById("timer");
+            const TIMER_INTERVAL_MS = 1000;
+            const updateDisplay = seconds => {
+                const formatted = formatTime(seconds);
+                timerDisplay.textContent = formatted;
+                document.title = `Timer: ${formatted}`;
+            };
             let count = 0;
             function onClick() {
                 count += 1;
                 document.getElementById('clicks').innerText = count;
-                var counter = 10;
-                setInterval(function () {
-                    counter--;
-                    if (counter >= 0) {
-                        span = document.getElementById("count");
-                        span.innerHTML = counter;
+                countdownInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay(timeLeft);
+                    } else {
+                        clearInterval(countdownInterval);
+                        onTimeEnd();
                     }
-                    if (counter === 0) {
-                        alert('sorry, out of time');
-                        clearInterval(counter);
-                    }
-                }, 1000);
-            
+                }, TIMER_INTERVAL_MS);
+
             };
         </script>
     </div>
