@@ -40,7 +40,7 @@
             function onClick() {
                 count += 1;
                 document.getElementById('clicks').innerText = count;
-                countdownInterval = setInterval(() => {
+                countdownInterval = setTimeout(() => {
                     if (timeLeft > 0) {
                         timeLeft--;
                         document.getElementById('timer').innerText = timeLeft;
