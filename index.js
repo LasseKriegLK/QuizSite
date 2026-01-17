@@ -38,3 +38,14 @@ form.addEventListener('submit', async (e) => {
 
     answerEl.value = "";
 });
+
+addEventListener("beforeunload", (event) => {
+    const name = nameEl.value.trim();
+    if (name) {
+        setDoc(doc(db, "answers", name), {
+            name,
+            answer: "[left the quiz]",
+            updated_at: serverTimestamp()
+        });
+    }
+ })

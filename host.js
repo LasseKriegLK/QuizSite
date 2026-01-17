@@ -23,6 +23,34 @@ const db = getFirestore(app);
 const container = document.getElementById('answers');
 const state = new Map();
 
+async function addPoint(name, answer) {
+    const data = doc.data();
+    const points = data.points || 0;
+    const newPoints = points + 1;
+
+
+    await setDoc(doc(db, "answers", name), {
+        name,
+        answer,
+        points: newPoints,
+        updated_at: serverTimestamp()
+    });
+}
+
+async function removePoint(name, answer) {
+    const data = doc.data();
+    const points = data.points || 0;
+    const newPoints = points - 1;
+
+
+    await setDoc(doc(db, "answers", name), {
+        name,
+        answer,
+        points: newPoints,
+        updated_at: serverTimestamp()
+    });
+}
+
 function render(doc) {
     const data = doc.data();
     const name = data.name;
@@ -31,7 +59,9 @@ function render(doc) {
     if (!state.has(name)) {
         const el = document.createElement('div');
         el.className = 'answer-item new';
-        el.innerHTML = `<strong>${name}</strong>: ${answer}`;
+        el.innerHTML = `<strong>${name}</strong>: ${answer} (Points: ${data.points || 0})`;
+        el.innerHTML += ` <button onclick="addPoint('${name}', 'Point awarded!')">+1</button>`;
+        el.innerHTML += ` <button onclick="removePoint('${name}', 'Point deducted!')">-1</button>`;
         container.appendChild(el);
         state.set(name, el);
         setTimeout(() => el.classList.remove('new'), 300);
