@@ -30,6 +30,31 @@
     <div id="answers"></div>
 
     <script type="module" src="host.js"></script>
+
+    <div id="counter">
+        <button type="button" onClick="onClick()">Click me</button>
+        <p>Clicks: <a id="clicks">0</a></p>
+        <script>
+            let count = 0;
+            function onClick() {
+                count += 1;
+                document.getElementById('clicks').innerText = count;
+                var counter = 10;
+                setInterval(function () {
+                    counter--;
+                    if (counter >= 0) {
+                        span = document.getElementById("count");
+                        span.innerHTML = counter;
+                    }
+                    if (counter === 0) {
+                        alert('sorry, out of time');
+                        clearInterval(counter);
+                    }
+                }, 1000);
+            
+            };
+        </script>
+    </div>
 </body>
 
 </html>
