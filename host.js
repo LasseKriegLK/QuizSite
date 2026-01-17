@@ -4,7 +4,11 @@ import {
     collection,
     onSnapshot,
     query,
-    orderBy
+    orderBy,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -23,56 +27,64 @@ const db = getFirestore(app);
 const container = document.getElementById('answers');
 const state = new Map();
 
-async function addPoint(name, answer) {
-    const data = doc.data();
-    const points = data.points || 0;
-    const newPoints = points + 1;
+async function addPoint(name) {
+    const ref = doc(db, "answers", name);
+    const snap = await getDoc(ref);
 
+    const points = snap.exists() ? snap.data().points || 0 : 0;
 
-    await setDoc(doc(db, "answers", name), {
-        name,
-        answer,
-        points: newPoints,
+    await setDoc(ref, {
+        points: points + 1,
         updated_at: serverTimestamp()
-    });
+    }, { merge: true });
 }
 
-async function removePoint(name, answer) {
-    const data = doc.data();
-    const points = data.points || 0;
-    const newPoints = points - 1;
+async function removePoint(name) {
+    const ref = doc(db, "answers", name);
+    const snap = await getDoc(ref);
 
+    const points = snap.exists() ? snap.data().points || 0 : 0;
 
-    await setDoc(doc(db, "answers", name), {
-        name,
-        answer,
-        points: newPoints,
+    await setDoc(ref, {
+        points: points - 1,
         updated_at: serverTimestamp()
-    });
+    }, { merge: true });
 }
 
-addEventListener("addPoint", addPoint);
-addEventListener("removePoint", removePoint);
-
-function render(doc) {
-    const data = doc.data();
+function render(docSnap) {
+    const data = docSnap.data();
     const name = data.name;
     const answer = data.answer;
+    const points = data.points || 0;
+
+    let el;
 
     if (!state.has(name)) {
-        const el = document.createElement('div');
-        el.className = 'answer-item new';
-        el.innerHTML = `<strong>${name}</strong>: ${answer} (Points: ${data.points || 0})`;
-        el.innerHTML += ` <button onclick="addPoint('${name}', 'Point awarded!')">+1</button>`;
-        el.innerHTML += ` <button onclick="removePoint('${name}', 'Point deducted!')">-1</button>`;
+        el = document.createElement('div');
+        el.className = 'answer-item';
+
+        const plus = document.createElement('button');
+        plus.textContent = "+1";
+        plus.onclick = () => addPoint(name);
+
+        const minus = document.createElement('button');
+        minus.textContent = "-1";
+        minus.onclick = () => removePoint(name);
+
+        el.append(
+            document.createElement("strong"),
+            ` ${name}: ${answer} (Points: `,
+            document.createTextNode(points),
+            ") ",
+            plus,
+            minus
+        );
+
         container.appendChild(el);
         state.set(name, el);
-        setTimeout(() => el.classList.remove('new'), 300);
     } else {
-        const el = state.get(name);
-        el.innerHTML = `<strong>${name}</strong>: ${answer}`;
-        el.classList.add('changed');
-        setTimeout(() => el.classList.remove('changed'), 800);
+        el = state.get(name);
+        el.innerHTML = `<strong>${name}</strong>: ${answer} (Points: ${points})`;
     }
 }
 
