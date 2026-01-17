@@ -51,6 +51,9 @@ async function removePoint(name, answer) {
     });
 }
 
+addEventListener("addPoint", addPoint);
+addEventListener("removePoint", removePoint);
+
 function render(doc) {
     const data = doc.data();
     const name = data.name;
