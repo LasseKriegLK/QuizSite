@@ -32,8 +32,7 @@ async function addPoint(name) {
     const points = snap.exists() ? snap.data().points || 0 : 0;
 
     await setDoc(ref, {
-        points: points + 1,
-        updated_at: serverTimestamp()
+        points: points + 1
     }, { merge: true });
 }
 
@@ -43,8 +42,7 @@ async function removePoint(name) {
     const points = snap.exists() ? snap.data().points || 0 : 0;
 
     await setDoc(ref, {
-        points: points - 1,
-        updated_at: serverTimestamp()
+        points: points - 1
     }, { merge: true });
 }
 
@@ -101,6 +99,7 @@ function render(docSnap) {
 const q = query(
     collection(db, "answers")
 );
+
 
 
 onSnapshot(q, (snapshot) => {

@@ -28,16 +28,12 @@ form.addEventListener('submit', async (e) => {
 
     const name = nameEl.value.trim();
     const answer = answerEl.value.trim();
+
     if (!name) return alert("Enter a name");
 
-    const ref = doc(db, "answers", name);
-    const snap = await getDoc(ref);
-
-    await setDoc(ref, {
+    await setDoc(doc(db, "answers", name), {
         name,
         answer,
-        points: snap.exists() ? snap.data().points : 0,
-        status: snap.exists() ? snap.data().status : "online",
         updated_at: serverTimestamp()
     }, { merge: true });
 
@@ -49,7 +45,6 @@ document.addEventListener("visibilitychange", () => {
     const name = nameEl.value.trim();
     if (name) {
         setDoc(doc(db, "answers", name), {
-            name,
             updated_at: serverTimestamp(),
             status: document.visibilityState === "visible" ? "online" : "offline"
         }, {
