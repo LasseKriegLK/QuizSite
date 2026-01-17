@@ -48,16 +48,18 @@ async function removePoint(name) {
 }
 
 function render(docSnap) {
+    const id = docSnap.id;  // add this
     const data = docSnap.data();
     const name = data.name;
     const answer = data.answer;
     const points = data.points || 0;
     const status = data.status;
 
-    if (!state.has(name)) {
+    if (!state.has(id)) {  // use ID instead of name
         const el = document.createElement('div');
         el.className = 'answer-item';
 
+        // create inner elements...
         const title = document.createElement('strong');
         title.textContent = name;
 
@@ -85,33 +87,21 @@ function render(docSnap) {
         statusEl.textContent = ` [${status}]`;
 
         el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
-        container.appendChild(el);
 
-        state.set(name, { el, pointsEl, answerEl, statusEl });
+        // store in state using ID
+        state.set(id, { el, pointsEl, answerEl, statusEl });
+
+        return el;  // return element for appending
     } else {
-        const item = state.get(name);
+        // update existing element
+        const item = state.get(id);
         item.statusEl.className = 'status ' + status;
         item.statusEl.textContent = ` [${status}]`;
         item.pointsEl.textContent = points;
         item.answerEl.textContent = `: ${answer} (Points: `;
-        if (item.answerEl.textContent != `: ${answer} (Points: `) {
-            item.el.classList.remove('default');
-            item.el.classList.add('new');
 
-            setTimeout(() => {
-                item.el.classList.remove('new');
-                item.el.classList.add('default');
-            }, 1000);
-        }
-        if (item.statusEl.textContent != ` [${status}]`) {
-            item.el.classList.remove('default');
-            item.el.classList.add('changed');
-
-            setTimeout(() => {
-                item.el.classList.remove('changed');
-                item.el.classList.add('default');
-            }, 1000);
-        }
+        // animation logic...
+        return item.el;  // still return element
     }
 }
 
@@ -122,11 +112,14 @@ const q = query(
 
 
 onSnapshot(q, (snapshot) => {
-    container.innerHTML = '';
-    state.clear();
+    snapshot.docs.forEach(docSnap => {
+        const id = docSnap.id;
+        const item = state.get(id);
 
-    snapshot.docs.forEach(doc => {
-        render(doc);
+        const el = item?.el || render(docSnap);
+
+
+        container.appendChild(el);
     });
 });
 
