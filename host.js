@@ -63,30 +63,41 @@ function render(docSnap) {
         el = document.createElement('div');
         el.className = 'answer-item';
 
+        const title = document.createElement('strong');
+        title.textContent = name;
+
+        const text = document.createElement('span');
+        text.textContent = `: ${answer} (Points: `;
+
+        const pointsEl = document.createElement('span');
+        pointsEl.className = 'points';
+        pointsEl.textContent = points;
+
+        const close = document.createElement('span');
+        close.textContent = ') ';
+
         const plus = document.createElement('button');
-        plus.textContent = "+1";
+        plus.textContent = '+1';
         plus.onclick = () => addPoint(name);
 
         const minus = document.createElement('button');
-        minus.textContent = "-1";
+        minus.textContent = '-1';
         minus.onclick = () => removePoint(name);
 
-        el.append(
-            document.createElement("strong"),
-            ` ${name}: ${answer} (Points: `,
-            document.createTextNode(points),
-            ") ",
-            plus,
-            minus
-        );
+        el.append(title, text, pointsEl, close, plus, minus);
 
         container.appendChild(el);
-        state.set(name, el);
+
+        state.set(name, {
+            el,
+            pointsEl
+        });
     } else {
-        el = state.get(name);
-        el.innerHTML = `<strong>${name}</strong>: ${answer} (Points: ${points})`;
+        const item = state.get(name);
+        item.pointsEl.textContent = points;
     }
 }
+
 
 const q = query(collection(db, "answers"), orderBy("updated_at"));
 
