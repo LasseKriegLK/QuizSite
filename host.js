@@ -29,8 +29,7 @@ const state = new Map();
 async function addPoint(name) {
     const ref = doc(db, "answers", name);
     const snap = await getDoc(ref);
-
-    const points = data.points;
+    const points = snap.exists() ? snap.data().points || 0 : 0;
 
     await setDoc(ref, {
         points: points + 1,
@@ -41,8 +40,7 @@ async function addPoint(name) {
 async function removePoint(name) {
     const ref = doc(db, "answers", name);
     const snap = await getDoc(ref);
-
-    const points = data.points;
+    const points = snap.exists() ? snap.data().points || 0 : 0;
 
     await setDoc(ref, {
         points: points - 1,
@@ -54,11 +52,10 @@ function render(docSnap) {
     const data = docSnap.data();
     const name = data.name;
     const answer = data.answer;
-    const points = data.points;
-    const status = data.status;
+    const points = data.points || 0;
+    const status = data.status || "offline";
 
     if (!state.has(name)) {
-        // Create elements
         const el = document.createElement('div');
         el.className = 'answer-item';
 
@@ -91,10 +88,8 @@ function render(docSnap) {
         el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
         container.appendChild(el);
 
-        // Store all elements in state
         state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
-        // Update live
         const item = state.get(name);
         item.statusEl.className = 'status ' + status;
         item.statusEl.textContent = ` [${status}]`;

@@ -28,19 +28,18 @@ form.addEventListener('submit', async (e) => {
 
     const name = nameEl.value.trim();
     const answer = answerEl.value.trim();
+    if (!name) return alert("Enter a name");
+
     const ref = doc(db, "answers", name);
     const snap = await getDoc(ref);
 
-    if (!name) return alert("Enter a name");
-
-    await setDoc(doc(db, "answers", name), {
+    await setDoc(ref, {
         name,
         answer,
         points: snap.exists() ? snap.data().points : 0,
         status: snap.exists() ? snap.data().status : "online",
-        updated_at: serverTimestamp(),
+        updated_at: serverTimestamp()
     }, { merge: true });
-
 
     answerEl.value = "";
 });
