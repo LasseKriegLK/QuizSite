@@ -34,14 +34,9 @@
     <div id="counter">
         <button type="button" onClick="onClick()">Click me</button>
         <p>Clicks: <a id="clicks">0</a></p>
-        <p>Time left: <span id="timer">10</span> seconds</p>
+        <p>Time left: <span id="timer"></span> seconds</p>
         <script>
-            const timerDisplay = document.getElementById("timer");
             const TIMER_INTERVAL_MS = 1000;
-            const updateDisplay = seconds => {
-                timerDisplay.textContent = seconds;
-                document.title = `Timer: ${seconds}`;
-            };
             let count = 0;
             function onClick() {
                 count += 1;
@@ -49,10 +44,9 @@
                 countdownInterval = setInterval(() => {
                     if (timeLeft > 0) {
                         timeLeft--;
-                        updateDisplay(timeLeft);
+                        document.getElementById('timer').innerText = timeLeft;
                     } else {
-                        clearInterval(countdownInterval);
-                        onTimeEnd();
+                        alert(`Time's up! You clicked ${count} times.`);
                     }
                 }, TIMER_INTERVAL_MS);
 
