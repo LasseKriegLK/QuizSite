@@ -30,7 +30,7 @@ async function addPoint(name) {
     const ref = doc(db, "answers", name);
     const snap = await getDoc(ref);
 
-    const points = snap.exists() ? snap.data().points || 0 : 0;
+    const points = data.points;
 
     await setDoc(ref, {
         points: points + 1,
@@ -42,7 +42,7 @@ async function removePoint(name) {
     const ref = doc(db, "answers", name);
     const snap = await getDoc(ref);
 
-    const points = snap.exists() ? snap.data().points || 0 : 0;
+    const points = data.points;
 
     await setDoc(ref, {
         points: points - 1,
@@ -54,8 +54,8 @@ function render(docSnap) {
     const data = docSnap.data();
     const name = data.name;
     const answer = data.answer;
-    const points = data.points || 0;
-    const status = data.status || "offline";
+    const points = data.points;
+    const status = data.status;
 
     if (!state.has(name)) {
         // Create elements

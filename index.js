@@ -26,18 +26,21 @@ const answerEl = document.getElementById('answer');
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = docSnap.data();
     const name = nameEl.value.trim();
     const answer = answerEl.value.trim();
+    const ref = doc(db, "answers", name);
+    const snap = await getDoc(ref);
+
     if (!name) return alert("Enter a name");
 
     await setDoc(doc(db, "answers", name), {
         name,
         answer,
-        updated_at: serverTimestamp()
-    }, {
-        merge: true
-    });
+        points: snap.exists() ? snap.data().points : 0,
+        status: snap.exists() ? snap.data().status : "online",
+        updated_at: serverTimestamp(),
+    }, { merge: true });
+
 
     answerEl.value = "";
 });
