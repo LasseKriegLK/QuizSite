@@ -4,16 +4,11 @@ import {
     collection,
     onSnapshot,
     query,
-    orderBy,
     doc,
     getDoc,
     setDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { initializeFirestore, enableIndexedDbPersistence } from "firebase/firestore";
-
-
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyDuQhrbY3AkVLDTmg6V2c5kCk68sjsnxtc",
@@ -112,15 +107,15 @@ const q = query(
     collection(db, "answers"),
 );
 
-window.addEventListener('DOMContentLoaded', () => {
-    onSnapshot(q, (snapshot) => {
-        snapshot.docChanges().forEach(change => {
-            if (change.type === "added" || change.type === "modified") {
-                render(change.doc);
-            }
-        });
+
+onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach(change => {
+        if (change.type === "added" || change.type === "modified") {
+            render(change.doc);
+        }
     });
 });
+
 
 
 
