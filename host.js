@@ -95,11 +95,16 @@ function render(docSnap) {
     } else {
         const item = state.get(name);
         item.pointsEl.textContent = points;
+        item.answerEl.textContent = `: ${answer} (Points: `;
+        
     }
 }
 
 
-const q = query(collection(db, "answers"), orderBy("updated_at"));
+const q = query(
+    collection(db, "answers"),
+    orderBy("updated_at", "asc")
+);
 
 onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach(change => {
