@@ -21,16 +21,17 @@ const db = getFirestore(app);
 
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
-const username = sessionStorage.getItem("username");
 
-if (!username) {
-    window.location.href = "/QuizSite/login/login.html";
-} else {
-    console.log("Eingeloggt als:", username);
+document.addEventListener("DOMContentLoaded", () => {
+    const username = sessionStorage.getItem("username");
 
-    document.getElementById("userDisplay").innerText =
-        `Willkommen, ${username}!`;
-}
+    if (!username) {
+        window.location.href = "/QuizSite/login.html";
+    } else {
+        document.getElementById("userDisplay").innerText =
+            `Willkommen, ${username}!`;
+    }
+});
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -60,5 +61,5 @@ document.addEventListener("visibilitychange", () => {
 
 function logout() {
     sessionStorage.removeItem("username");
-    window.location.href = "/QuizSite/login/login.html";
+    window.location.href = "/QuizSite/login.html";
 }
