@@ -19,7 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
+const form = document.getElementById("registerForm");
 const loginname = document.getElementById('username').value.trim();
 const password = document.getElementById('password').value;
 const secondPassword = document.getElementById('confirm_password').value;
@@ -39,5 +39,5 @@ form.addEventListener('submit', async (e) => {
         loginname,
         password
     }, { merge: true });
-    window.location.href = "/login";
+    window.location.href = "/QuizSite/login/login.html";
 });

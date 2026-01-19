@@ -38,5 +38,5 @@ form.addEventListener('submit', async (e) => {
     }
     sessionStorage.setItem("username", username);
 
-    window.location.href = "index.html";
+    window.location.href = "/QuizSite/index.html";
 });

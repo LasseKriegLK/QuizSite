@@ -19,13 +19,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const form = document.getElementById('quizForm');
-const nameEl = document.getElementById('username');
+const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
 const username = sessionStorage.getItem("username");
 
 if (!username) {
-    window.location.href = "login.html";
+    window.location.href = "/QuizSite/login/login.html";
 } else {
     console.log("Eingeloggt als:", username);
 
@@ -61,5 +60,5 @@ document.addEventListener("visibilitychange", () => {
 
 function logout() {
     sessionStorage.removeItem("username");
-    window.location.href = "login.html";
+    window.location.href = "/QuizSite/login/login.html";
 }
