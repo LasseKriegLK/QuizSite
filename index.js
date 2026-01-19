@@ -47,7 +47,7 @@ form.addEventListener('submit', async (e) => {
 
 
 document.addEventListener("visibilitychange", () => {
-    const name = nameEl.value.trim();
+    const name = sessionStorage.getItem("username");
     if (name) {
         setDoc(doc(db, "answers", name), {
             updated_at: serverTimestamp(),

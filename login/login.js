@@ -24,18 +24,8 @@ const form = document.getElementById("loginForm");
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const ref = doc(db, "users", username);
-    const snap = await getDoc(ref);
-
-    if (!snap.exists()) {
-        return alert("Benutzername nicht gefunden");
-    }
-    const data = snap.data();
-    if (data.password !== password) {
-        return alert("Falsches Passwort");
-    }
+    const username = document.getElementById("username").value.trim();
+    
     sessionStorage.setItem("username", username);
 
     window.location.href = "/QuizSite/index.html";
