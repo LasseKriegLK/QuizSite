@@ -59,11 +59,11 @@ document.addEventListener("visibilitychange", () => {
     }
 });
 
-const logoutButton = document.getElementById("logoutButton");
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logoutButton");
 
-logoutButton.addEventListener("click", logout);
-
-function logout() {
-    sessionStorage.removeItem("username");
-    window.location.href = "/QuizSite/login.html";
-}
+    logoutButton.addEventListener("click", () => {
+        sessionStorage.removeItem("username");
+        window.location.href = "/QuizSite/login.html";
+    });
+});
