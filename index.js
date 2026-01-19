@@ -22,17 +22,23 @@ const db = getFirestore(app);
 const form = document.getElementById('quizForm');
 const nameEl = document.getElementById('username');
 const answerEl = document.getElementById('answer');
+const username = sessionStorage.getItem("username");
+
+if (!username) {
+    window.location.href = "login.html";
+} else {
+    console.log("Eingeloggt als:", username);
+
+    document.getElementById("userDisplay").innerText =
+        `Willkommen, ${username}!`;
+}
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    const name = nameEl.value.trim();
     const answer = answerEl.value.trim();
 
-    if (!name) return alert("Enter a name");
-
-    await setDoc(doc(db, "answers", name), {
-        name,
+    await setDoc(doc(db, "answers", username), {
+        name: username,
         answer,
         updated_at: serverTimestamp()
     }, { merge: true });
@@ -52,3 +58,8 @@ document.addEventListener("visibilitychange", () => {
         });
     }
 });
+
+function logout() {
+    sessionStorage.removeItem("username");
+    window.location.href = "login.html";
+}
