@@ -21,9 +21,9 @@ const db = getFirestore(app);
 
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
+const username = sessionStorage.getItem("username");
 
 document.addEventListener("DOMContentLoaded", () => {
-    const username = sessionStorage.getItem("username");
 
     if (!username) {
         window.location.href = "/QuizSite/login.html";
@@ -48,9 +48,8 @@ form.addEventListener('submit', async (e) => {
 
 
 document.addEventListener("visibilitychange", () => {
-    const name = sessionStorage.getItem("username");
-    if (name) {
-        setDoc(doc(db, "answers", name), {
+    if (username) {
+        setDoc(doc(db, "answers", username), {
             updated_at: serverTimestamp(),
             status: document.visibilityState === "visible" ? "online" : "offline"
         }, {
