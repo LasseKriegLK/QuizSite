@@ -20,39 +20,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const quizForm = document.getElementById("quizCreatorForm");
-const categoryForm = document.getElementById("categoryForm");
-const questionForm = document.getElementById("questionForm");
-
-document.addEventListener("DOMContentLoaded", () => {
-    categoryForm.style.display = "none";
-    questionForm.style.display = "none";
-});
 
 quizForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const quizName = document.getElementById("quizName").value.trim();
-
-    if (!quizName) {
-        alert("Bitte Quiznamen eingeben");
-        return;
-    }
-    categoryForm.style.display = "block";
-});
-
-categoryForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const categoryName = document.getElementById("categoryName").value.trim();
-
-    if (!categoryName) {
-        alert("Bitte Kategorienamen eingeben");
-        return;
-    }
-    questionForm.style.display = "block";
-});
-
-questionForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const quizName = document.getElementById("quizName").value.trim();
+    const quizName = document.getElementById("quizTitle").value.trim();
     const categoryName = document.getElementById("categoryName").value.trim();
     const questionText = document.getElementById("questionText").value.trim();
     const answerText = document.getElementById("answerText").value.trim();
