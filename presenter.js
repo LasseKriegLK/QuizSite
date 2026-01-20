@@ -27,11 +27,7 @@ onSnapshot(ref, async (docSnap) => {
     const showAnswer = data.showAnswer;
 
     if (questionId === "none") {
-        document.getElementById("BaseScreen").classList.remove("hidden");
-        document.getElementById("QuestionScreen").classList.add("hidden");
-        document.getElementById("AnswerScreen").classList.add("hidden");
-        document.getElementById("ScoreScreen").classList.add("hidden");
-        document.getElementById("MultipleChoice").classList.add("hidden");
+
         return;
     }
     const questionDocSnap = await getDoc(doc(db, "questions", questionId));
@@ -52,6 +48,48 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("AnswerScreen").classList.remove("hidden");
         }
     }
-    
 
+
+});
+
+onSnapshot(ref, async (docSnap) => {
+    try {
+        const data = docSnap.data();
+        if (!data) return;
+
+        const questionId = data.questionId;
+        if (questionId === "none") {
+            document.getElementById("BaseScreen").classList.remove("hidden");
+            document.getElementById("QuestionScreen").classList.add("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.add("hidden");
+            return;
+        }
+
+        const questionDocSnap = await getDoc(doc(db, "questions", questionId));
+        if (!questionDocSnap.exists()) return;
+
+        const questionData = questionDocSnap.data();
+        const questionText = questionData.question;
+        const answerText = questionData.answer;
+        const categoryType = questionData.categoryType;
+
+        if (categoryType === "basic") {
+            const questionEl = document.getElementById("QuestionText");
+            if (questionEl) questionEl.innerText = questionText;
+            document.getElementById("BaseScreen").classList.add("hidden");
+            document.getElementById("QuestionScreen").classList.remove("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.add("hidden");
+            if (data.showAnswer) {
+                const answerEl = document.getElementById("AnswerText");
+                if (answerEl) answerEl.innerText = answerText;
+                document.getElementById("AnswerScreen").classList.remove("hidden");
+            }
+        }
+    } catch (err) {
+        console.error("Error in onSnapshot:", err);
+    }
 });
