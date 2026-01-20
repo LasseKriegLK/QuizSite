@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { merge: true });
         document.getElementById("questionText").value = "";
         document.getElementById("answerText").value = "";
-        console.log("Question added successfully");
+        console.log("Question added successfully ");
     });
 });
 
