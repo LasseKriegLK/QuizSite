@@ -3,7 +3,8 @@ import {
     getFirestore,
     doc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    collection
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -19,40 +20,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const quizForm = document.getElementById("quizCreateForm");
-
-quizForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const quizName = document.getElementById("quizTitle").value.trim();
-    const categoryName = document.getElementById("categoryName").value.trim();
-    const questionText = document.getElementById("questionText").value.trim();
-    const answerText = document.getElementById("answerText").value.trim();
-    const questionRef = doc(collection(db, "questions"));
-    const questionKey = questionRef.id;
-
-    if (!questionText || !answerText) {
-        alert("Bitte Frage und Antwort eingeben");
+document.addEventListener("DOMContentLoaded", () => {
+    const quizForm = document.getElementById("quizCreateForm");
+    if (!quizForm) {
+        console.error("quizCreateForm not found");
         return;
     }
-    await setDoc(questionRef, {
-        quiz: quizName,
-        category: categoryName,
-        question: questionText,
-        answer: answerText,
-        created_at: serverTimestamp()
+
+    quizForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const quizName = document.getElementById("quizTitle").value.trim();
+        const categoryName = document.getElementById("categoryName").value.trim();
+        const questionText = document.getElementById("questionText").value.trim();
+        const answerText = document.getElementById("answerText").value.trim();
+        const questionRef = doc(collection(db, "questions"));
+        const questionKey = questionRef.id;
+
+        if (!questionText || !answerText) {
+            alert("Bitte Frage und Antwort eingeben");
+            return;
+        }
+        await setDoc(questionRef, {
+            quiz: quizName,
+            category: categoryName,
+            question: questionText,
+            answer: answerText,
+            created_at: serverTimestamp()
+        }, { merge: true });
+        await setDoc(doc(db, "Quizzes", quizName), {
+            name: quizName
+        }, { merge: true });
+        await setDoc(doc(db, "Quizzes", quizName, "Categories", categoryName), {
+            name: categoryName
+        }, { merge: true });
+        await setDoc(doc(db, "Quizzes", quizName, "Categories", categoryName, "Questions", questionKey), {
+            Key: questionKey,
+            question: questionText,
+            answer: answerText,
+            created_at: serverTimestamp()
+        }, { merge: true });
+        document.getElementById("questionText").value = "";
+        document.getElementById("answerText").value = "";
     });
-    await setDoc(doc(db, "Quizzes", quizName), {
-        name: quizName
-    }, { merge: true });
-    await setDoc(doc(db, "Quizzes", quizName, "Categories", categoryName), {
-        name: categoryName
-    }, { merge: true });
-    await setDoc(doc(db, "Quizzes", quizName, "Categories", categoryName, "Questions", questionKey), {
-        Key: questionKey,
-        question: questionText,
-        answer: answerText,
-        created_at: serverTimestamp()
-    });
-    document.getElementById("questionText").value = "";
-    document.getElementById("answerText").value = "";
 });
+
+
