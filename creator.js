@@ -60,8 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             created_at: serverTimestamp()
         }, { merge: true });
         document.getElementById("questionText").value = "";
-        document.getElementById("answerText").value = "";
-        console.log("Question added successfully ");
+        document.getElementById("questionAnswer").value = "";
     });
 });
 
