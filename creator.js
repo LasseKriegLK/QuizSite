@@ -19,7 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const quizForm = document.getElementById("quizCreatorForm");
+const quizForm = document.getElementById("quizCreateForm");
 
 quizForm.addEventListener("submit", async (e) => {
     e.preventDefault();
