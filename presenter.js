@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import {
     getFirestore,
     onSnapshot,
-    getDoc
+    getDoc,
+    doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -18,9 +19,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const ref1 = doc(db, "quizState", "current");
+const ref = doc(db, "quizState", "current");
 
-onSnapshot(ref1, async (docSnap) => {
+onSnapshot(ref, async (docSnap) => {
     const data = docSnap.data();
     const questionId = data.questionId;
     const showAnswer = data.showAnswer;
