@@ -5,30 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Host View</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .hidden {
-            display: none;
-        }
-        .visible {
-            display: block;
-        }
-
-    </style>
+    <script type="module" src="host.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    
 </head>
 
 <body>
     <h1>Answers</h1>
     <div id="answers"></div>
-
-    <script type="module" src="host.js"></script>
 
     <div id="counter">
         <button type="button" onClick="onClick()">Click me</button>
@@ -64,10 +48,24 @@
             }
         </script>
     </div>
-    <div id ="quizselection">
-        <h2>Quiz Selection</h2>
-        <div id="Quizzes"></div>
+    <div>
+        <button id="hide Question">Hide</button>
     </div>
+    <div id="quizselection">
+        <h2>Quiz Selection</h2>
+        <select id="quizSelect">
+            <option value="">Select Quiz</option>
+        </select>
+
+        <select id="categorySelect" disabled>
+            <option value="">Select Category</option>
+        </select>
+
+        <select id="questionSelect" disabled>
+            <option value="">Select Question</option>
+        </select>
+    </div>
+    <script type="module" src="host.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creater View</title>
+    <script type="module" src="creator.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</html>
+
+<body>
+    <h1>Create a New Quiz</h1>
+    <form id="quizCreateForm">
+        <input id="quizTitle" placeholder="Quiz Title" required />
+        <button type="submit">Create Quiz</button>
+    </form>
+    <form id="categoryForm">
+        <h2>Add Category</h2>
+        <input id="categoryName" placeholder="Category Name" required />
+        <button type="submit">Add Category</button>
+    </form>
+    <form id="questionForm">
+        <h2>Add Question</h2>
+        <input id="questionText" placeholder="Question Text" required />
+        <input id="questionAnswer" placeholder="Correct Answer" required />
+        <button type="submit">Add Question</button>
+    </form>

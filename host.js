@@ -84,7 +84,6 @@ function render(docSnap) {
         statusEl.textContent = ` [${status}]`;
 
         el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
-        container.appendChild(el);
 
         state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
@@ -101,7 +100,73 @@ const q = query(
     collection(db, "answers")
 );
 
+const quizSelect = document.getElementById("quizSelect");
+const categorySelect = document.getElementById("categorySelect");
+const questionSelect = document.getElementById("questionSelect");
 
+async function loadQuizzes() {
+    const snapshot = await get(ref(db, "Quizzes"));
+    if (!snapshot.exists()) return;
+
+    quizSelect.innerHTML = `<option value="">Select Quiz</option>`;
+
+    Object.keys(snapshot.val()).forEach(quizId => {
+        const option = document.createElement("option");
+        option.value = quizId;
+        option.textContent = quizId;
+        quizSelect.appendChild(option);
+    });
+}
+
+loadQuizzes();
+
+quizSelect.addEventListener("change", async () => {
+    const quizId = quizSelect.value;
+
+    categorySelect.innerHTML = `<option value="">Select Category</option>`;
+    questionSelect.innerHTML = `<option value="">Select Question</option>`;
+    categorySelect.disabled = true;
+    questionSelect.disabled = true;
+
+    if (!quizId) return;
+
+    const snapshot = await get(ref(db, `Quizzes/${quizId}`));
+    if (!snapshot.exists()) return;
+
+    Object.keys(snapshot.val()).forEach(categoryId => {
+        const option = document.createElement("option");
+        option.value = categoryId;
+        option.textContent = categoryId;
+        categorySelect.appendChild(option);
+    });
+
+    categorySelect.disabled = false;
+});
+
+categorySelect.addEventListener("change", async () => {
+    const quizId = quizSelect.value;
+    const categoryId = categorySelect.value;
+
+    questionSelect.innerHTML = `<option value="">Select Question</option>`;
+    questionSelect.disabled = true;
+
+    if (!quizId || !categoryId) return;
+
+    const snapshot = await get(
+        ref(db, `Quizzes/${quizId}/${categoryId}`)
+    );
+
+    if (!snapshot.exists()) return;
+
+    Object.entries(snapshot.val()).forEach(([questionKey, questionData]) => {
+        const option = document.createElement("option");
+        option.value = questionKey;
+        option.textContent = questionData.questionText;
+        questionSelect.appendChild(option);
+    });
+
+    questionSelect.disabled = false;
+});
 
 onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach(change => {
@@ -109,4 +174,16 @@ onSnapshot(q, (snapshot) => {
             render(change.doc);
         }
     });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const hideButton = document.getElementById("hide Question");
+
+    hideButton.addEventListener("click", async () => {
+        await setDoc(doc(db, "quizState", "current"), {
+            questionID: none,
+            updated_at: serverTimestamp()
+        }, { merge: true });
+    }
+    );
 });
