@@ -7,7 +7,7 @@
     <title>Host View</title>
     <script type="module" src="host.js"></script>
     <link rel="stylesheet" href="style.css" />
-    
+
 </head>
 
 <body>
@@ -52,18 +52,12 @@
         <button id="hide Question">Hide</button>
     </div>
     <div id="quizselection">
-        <h2>Quiz Selection</h2>
-        <select id="quizSelect">
+        <h2>Select a Quiz</h2>
+        <select id="quizDropdown">
             <option value="">Select Quiz</option>
         </select>
 
-        <select id="categorySelect" disabled>
-            <option value="">Select Category</option>
-        </select>
-
-        <select id="questionSelect" disabled>
-            <option value="">Select Question</option>
-        </select>
+        <div id="questionsContainer"></div>
     </div>
     <script type="module" src="host.js"></script>
 </body>

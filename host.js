@@ -7,7 +7,9 @@ import {
     doc,
     getDoc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    getDocs,
+    where
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -115,4 +117,61 @@ document.getElementById("hide Question").addEventListener("click", async () => {
         questionId: "none",
         updated_at: serverTimestamp()
     }, { merge: true });
+});
+
+const quizDropdown = document.getElementById("quizDropdown");
+const questionsContainer = document.getElementById("questionsContainer");
+
+async function loadQuizzes() {
+    const quizzesSnapshot = await getDocs(collection(db, "Quizzes"));
+    quizzesSnapshot.forEach(docSnap => {
+        const quizId = docSnap.id;
+        const option = document.createElement("option");
+        option.value = quizId;
+        option.textContent = quizId;
+        quizDropdown.appendChild(option);
+    });
+}
+
+loadQuizzes();
+
+quizDropdown.addEventListener("change", async () => {
+    const quizId = quizDropdown.value;
+    questionsContainer.innerHTML = "";
+
+    if (!quizId) return;
+
+    const quizDocRef = doc(db, "Quizzes", quizId);
+    const quizDocSnap = await getDoc(quizDocRef);
+
+    if (!quizDocSnap.exists()) return;
+
+    const quizData = quizDocSnap.data();
+
+    const categoriesSnapshot = await getDocs(collection(db, "Quizzes", quizId, "Categories"));
+
+    for (const categoryDoc of categoriesSnapshot.docs) {
+        const categoryName = categoryDoc.id;
+
+        const categoryHeader = document.createElement("h3");
+        categoryHeader.textContent = categoryName;
+        questionsContainer.appendChild(categoryHeader);
+
+        const questionsSnapshot = await getDocs(collection(db, "Quizzes", quizId, "Categories", categoryName, "Questions"));
+
+        const questionsArray = [];
+        questionsSnapshot.forEach(qDoc => {
+            const data = qDoc.data();
+            questionsArray.push({ ...data, id: qDoc.id });
+        });
+
+        questionsArray.sort((a, b) => a.created_at?.seconds - b.created_at?.seconds);
+
+        questionsArray.forEach(q => {
+            const button = document.createElement("button");
+            button.textContent = q.question;
+            button.onclick = () => alert(`Question: ${q.question}\nAnswer: ${q.answer}`);
+            questionsContainer.appendChild(button);
+        });
+    }
 });
