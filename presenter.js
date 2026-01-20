@@ -19,11 +19,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const ref1 = doc(db, "quizState", "current");
-const ref2 = doc(db, "questions");
 
 onSnapshot(ref1, async (docSnap) => {
     const data = docSnap.data();
     const questionId = data.questionId;
+    const showAnswer = data.showAnswer;
 
     if (questionId === "none") {
         document.getElementById("BaseScreen").classList.remove("hidden");
@@ -33,7 +33,24 @@ onSnapshot(ref1, async (docSnap) => {
         document.getElementById("MultipleChoice").classList.add("hidden");
         return;
     }
+    const questionDocSnap = await getDoc(doc(db, "questions", questionId));
+    const questionData = questionDocSnap.data();
+    const questionText = questionData.question;
+    const answerText = questionData.answer;
+    const categoryName = questionData.category;
 
+    if (categoryName === "basic") {
+        document.getElementById("QuestionText").innerText = questionText;
+        document.getElementById("BaseScreen").classList.add("hidden");
+        document.getElementById("QuestionScreen").classList.remove("hidden");
+        document.getElementById("AnswerScreen").classList.add("hidden");
+        document.getElementById("ScoreScreen").classList.add("hidden");
+        document.getElementById("MultipleChoice").classList.add("hidden");
+        if (showAnswer) {
+            document.getElementById("AnswerText").innerText = answerText;
+            document.getElementById("AnswerScreen").classList.remove("hidden");
+        }
+    }
 
 
 

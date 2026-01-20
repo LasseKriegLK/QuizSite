@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const categoryName = document.getElementById("categoryName").value.trim();
         const questionText = document.getElementById("questionText").value.trim();
         const answerText = document.getElementById("questionAnswer").value.trim();
+        const categoryType = document.getElementById("categoryType").value;
         const questionRef = doc(collection(db, "questions"));
         const questionKey = questionRef.id;
 
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             category: categoryName,
             question: questionText,
             answer: answerText,
+            categoryType: categoryType,
             created_at: serverTimestamp()
         }, { merge: true });
         await setDoc(doc(db, "Quizzes", quizName), {

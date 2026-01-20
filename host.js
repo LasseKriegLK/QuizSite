@@ -169,8 +169,20 @@ quizDropdown.addEventListener("change", async () => {
 
         questionsArray.forEach(q => {
             const button = document.createElement("button");
+            const answerButton = document.createElement("button");
+            answerButton.textContent = `Show Answer: ${q.answer}`;
+            answerButton.onclick = () => setDoc(doc(db, "quizState", "current"), {
+                questionId: q.Key,
+                updated_at: serverTimestamp(),
+                showAnswer: true
+            }, { merge: true });
+            questionsContainer.appendChild(answerButton);
             button.textContent = q.question;
-            button.onclick = () => alert(`Question: ${q.question}\nAnswer: ${q.answer}`);
+            button.onclick = () => setDoc(doc(db, "quizState", "current"), {
+                questionId: q.Key,
+                updated_at: serverTimestamp(),
+                showAnswer: false
+            }, { merge: true });
             questionsContainer.appendChild(button);
         });
     }
