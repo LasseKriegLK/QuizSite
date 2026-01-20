@@ -38,9 +38,9 @@ onSnapshot(ref, async (docSnap) => {
     const questionData = questionDocSnap.data();
     const questionText = questionData.question;
     const answerText = questionData.answer;
-    const categoryName = questionData.category;
+    const categoryType = questionData.categoryType;
 
-    if (categoryName === "basic") {
+    if (categoryType === "basic") {
         document.getElementById("QuestionText").innerText = questionText;
         document.getElementById("BaseScreen").classList.add("hidden");
         document.getElementById("QuestionScreen").classList.remove("hidden");
@@ -52,7 +52,6 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("AnswerScreen").classList.remove("hidden");
         }
     }
-
-
+    
 
 });
