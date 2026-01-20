@@ -27,13 +27,14 @@ quizForm.addEventListener("submit", async (e) => {
     const categoryName = document.getElementById("categoryName").value.trim();
     const questionText = document.getElementById("questionText").value.trim();
     const answerText = document.getElementById("answerText").value.trim();
-    const questionKey = serverTimestamp();
+    const questionRef = doc(collection(db, "questions"));
+    const questionKey = questionRef.id;
 
     if (!questionText || !answerText) {
         alert("Bitte Frage und Antwort eingeben");
         return;
     }
-    await setDoc(doc(db, "questions", questionKey), {
+    await setDoc(questionRef, {
         quiz: quizName,
         category: categoryName,
         question: questionText,
