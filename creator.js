@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     quizForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const quizName = document.getElementById("quizTitle").value.trim();
-        const categoryName = document.getElementById("categoryName").value.trim();
-        const questionText = document.getElementById("questionText").value.trim();
-        const answerText = document.getElementById("answerText").value.trim();
+        const quizName = quizForm.getElementById("quizTitle").value.trim();
+        const categoryName = quizForm.getElementById("categoryName").value.trim();
+        const questionText = quizForm.getElementById("questionText").value.trim();
+        const answerText = quizForm.getElementById("answerText").value.trim();
         const questionRef = doc(collection(db, "questions"));
         const questionKey = questionRef.id;
 
