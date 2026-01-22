@@ -22,38 +22,6 @@ const db = getFirestore(app);
 const ref = doc(db, "quizState", "current");
 
 onSnapshot(ref, async (docSnap) => {
-    const data = docSnap.data();
-    const questionId = data.questionId;
-    const showAnswer = data.showAnswer;
-
-    if (questionId === "none") {
-
-        return;
-    }
-    const questionDocSnap = await getDoc(doc(db, "questions", questionId));
-    const questionData = questionDocSnap.data();
-    const questionText = questionData.question;
-    const answerText = questionData.answer;
-    const categoryType = questionData.categoryType;
-
-    if (categoryType === "basic") {
-        document.getElementById("QuestionText").innerText = questionText;
-        document.getElementById("BaseScreen").classList.add("hidden");
-        document.getElementById("AnswerScreen").classList.add("hidden");
-        document.getElementById("ScoreScreen").classList.add("hidden");
-        document.getElementById("MultipleChoice").classList.add("hidden");
-        document.getElementById("12oder16Screen").classList.add("hidden");
-        document.getElementById("QuestionScreen").classList.remove("hidden");
-        if (showAnswer) {
-            document.getElementById("AnswerText").innerText = answerText;
-            document.getElementById("AnswerScreen").classList.remove("hidden");
-        }
-    }
-
-
-});
-
-onSnapshot(ref, async (docSnap) => {
     try {
         const data = docSnap.data();
         if (!data) return;
