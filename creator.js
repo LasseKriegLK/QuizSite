@@ -64,10 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("questionText").value = "";
         document.getElementById("questionAnswer").value = "";
         if (categoryType === "multipleChoice") {
-            const choice1 = document.getElementById("choice1").value.trim();
-            const choice2 = document.getElementById("choice2").value.trim();
-            const choice3 = document.getElementById("choice3").value.trim();
-            const choice4 = document.getElementById("choice4").value.trim();
+            const choice1 = document.getElementById("mcchoice1").value.trim();
+            const choice2 = document.getElementById("mcchoice2").value.trim();
+            const choice3 = document.getElementById("mcchoice3").value.trim();
+            const choice4 = document.getElementById("mcchoice4").value.trim();
             await setDoc(questionRef, {
                 choice1: choice1,
                 choice2: choice2,
@@ -85,23 +85,23 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("choice3").value = "";
             document.getElementById("choice4").value = "";
         }
-    if (categoryType === "12oder16") {
-            const choice1 = document.getElementById("choice1").value.trim();
-            const choice2 = document.getElementById("choice2").value.trim();
-            const choice3 = document.getElementById("choice3").value.trim();
-            const choice4 = document.getElementById("choice4").value.trim();
-            const choice5 = document.getElementById("choice5").value.trim();
-            const choice6 = document.getElementById("choice6").value.trim();
-            const choice7 = document.getElementById("choice7").value.trim();
-            const choice8 = document.getElementById("choice8").value.trim();
-            const choice9 = document.getElementById("choice9").value.trim();
-            const choice10 = document.getElementById("choice10").value.trim();
-            const choice11 = document.getElementById("choice11").value.trim();
-            const choice12 = document.getElementById("choice12").value.trim();
-            const choice13 = document.getElementById("choice13").value.trim();
-            const choice14 = document.getElementById("choice14").value.trim();
-            const choice15 = document.getElementById("choice15").value.trim();
-            const choice16 = document.getElementById("choice16").value.trim();
+        if (categoryType === "12oder16") {
+            const choice1 = document.getElementById("16choice1").value.trim();
+            const choice2 = document.getElementById("16choice2").value.trim();
+            const choice3 = document.getElementById("16choice3").value.trim();
+            const choice4 = document.getElementById("16choice4").value.trim();
+            const choice5 = document.getElementById("16choice5").value.trim();
+            const choice6 = document.getElementById("16choice6").value.trim();
+            const choice7 = document.getElementById("16choice7").value.trim();
+            const choice8 = document.getElementById("16choice8").value.trim();
+            const choice9 = document.getElementById("16choice9").value.trim();
+            const choice10 = document.getElementById("16choice10").value.trim();
+            const choice11 = document.getElementById("16choice11").value.trim();
+            const choice12 = document.getElementById("16choice12").value.trim();
+            const choice13 = document.getElementById("16choice13").value.trim();
+            const choice14 = document.getElementById("16choice14").value.trim();
+            const choice15 = document.getElementById("16choice15").value.trim();
+            const choice16 = document.getElementById("16choice16").value.trim();
             await setDoc(questionRef, {
                 choice1: choice1,
                 choice2: choice2,
