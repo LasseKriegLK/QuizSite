@@ -153,11 +153,23 @@ quizDropdown.addEventListener("change", async () => {
     for (const categoryDoc of categoriesSnapshot.docs) {
         const categoryName = categoryDoc.id;
 
-        const categoryHeader = document.createElement("h3");
-        categoryHeader.textContent = categoryName;
-        questionsContainer.appendChild(categoryHeader);
 
-        const questionsSnapshot = await getDocs(collection(db, "Quizzes", quizId, "Categories", categoryName, "Questions"));
+        const categoryButton = document.createElement("button");
+        categoryButton.textContent = categoryName;
+
+        categoryButton.onclick = () => {
+            setDoc(doc(db, "quizState", "current"), {
+                category: categoryName,
+                questionId: "category",
+                updated_at: serverTimestamp()
+            }, { merge: true });
+        };
+
+        questionsContainer.appendChild(categoryButton);
+
+        const questionsSnapshot = await getDocs(
+            collection(db, "Quizzes", quizId, "Categories", categoryName, "Questions")
+        );
 
         const questionsArray = [];
         questionsSnapshot.forEach(qDoc => {
@@ -168,22 +180,28 @@ quizDropdown.addEventListener("change", async () => {
         questionsArray.sort((a, b) => a.created_at?.seconds - b.created_at?.seconds);
 
         questionsArray.forEach(q => {
-            const button = document.createElement("button");
+            const questionButton = document.createElement("button");
+            questionButton.textContent = q.question;
+
+            questionButton.onclick = () =>
+                setDoc(doc(db, "quizState", "current"), {
+                    questionId: q.Key,
+                    updated_at: serverTimestamp(),
+                    showAnswer: false
+                }, { merge: true });
+
             const answerButton = document.createElement("button");
-            answerButton.textContent = `Show Answer: ${q.answer}`;
-            answerButton.onclick = () => setDoc(doc(db, "quizState", "current"), {
-                questionId: q.Key,
-                updated_at: serverTimestamp(),
-                showAnswer: true
-            }, { merge: true });
+            answerButton.textContent = "Show Answer";
+
+            answerButton.onclick = () =>
+                setDoc(doc(db, "quizState", "current"), {
+                    questionId: q.Key,
+                    updated_at: serverTimestamp(),
+                    showAnswer: true
+                }, { merge: true });
+
+            questionsContainer.appendChild(questionButton);
             questionsContainer.appendChild(answerButton);
-            button.textContent = q.question;
-            button.onclick = () => setDoc(doc(db, "quizState", "current"), {
-                questionId: q.Key,
-                updated_at: serverTimestamp(),
-                showAnswer: false
-            }, { merge: true });
-            questionsContainer.appendChild(button);
         });
     }
 });

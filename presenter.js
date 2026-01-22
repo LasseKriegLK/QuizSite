@@ -39,10 +39,11 @@ onSnapshot(ref, async (docSnap) => {
     if (categoryType === "basic") {
         document.getElementById("QuestionText").innerText = questionText;
         document.getElementById("BaseScreen").classList.add("hidden");
-        document.getElementById("QuestionScreen").classList.remove("hidden");
         document.getElementById("AnswerScreen").classList.add("hidden");
         document.getElementById("ScoreScreen").classList.add("hidden");
         document.getElementById("MultipleChoice").classList.add("hidden");
+        document.getElementById("12oder16Screen").classList.add("hidden");
+        document.getElementById("QuestionScreen").classList.remove("hidden");
         if (showAnswer) {
             document.getElementById("AnswerText").innerText = answerText;
             document.getElementById("AnswerScreen").classList.remove("hidden");
@@ -59,11 +60,13 @@ onSnapshot(ref, async (docSnap) => {
 
         const questionId = data.questionId;
         if (questionId === "none") {
+            document.getElementById("12oder16Screen").classList.add("hidden");
             document.getElementById("BaseScreen").classList.remove("hidden");
             document.getElementById("QuestionScreen").classList.add("hidden");
             document.getElementById("AnswerScreen").classList.add("hidden");
             document.getElementById("ScoreScreen").classList.add("hidden");
             document.getElementById("MultipleChoice").classList.add("hidden");
+            document.getElementById("CategoryScreen").classList.add("hidden");
             return;
         }
 
@@ -75,7 +78,94 @@ onSnapshot(ref, async (docSnap) => {
         const answerText = questionData.answer;
         const categoryType = questionData.categoryType;
 
+        if (questionId === "category") {
+            const categoryName = questionData.category;
+            categoryName = document.getElementById("CategoryName").innerText;
+            document.getElementById("12oder16Screen").classList.add("hidden");
+            document.getElementById("BaseScreen").classList.add("hidden");
+            document.getElementById("QuestionScreen").classList.add("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.add("hidden");
+            document.getElementById("CategoryScreen").classList.remove("hidden");
+        }
+
         if (categoryType === "basic") {
+            const questionEl = document.getElementById("QuestionText");
+            if (questionEl) questionEl.innerText = questionText;
+            document.getElementById("12oder16Screen").classList.add("hidden");
+            document.getElementById("BaseScreen").classList.add("hidden");
+            document.getElementById("QuestionScreen").classList.remove("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.add("hidden");
+            document.getElementById("CategoryScreen").classList.add("hidden");
+            if (data.showAnswer) {
+                const answerEl = document.getElementById("AnswerText");
+                if (answerEl) answerEl.innerText = answerText;
+                document.getElementById("AnswerScreen").classList.remove("hidden");
+            }
+        }
+        if (categoryType === "multipleChoice") {
+            const choice1 = questionData.choice1;
+            const choice2 = questionData.choice2;
+            const choice3 = questionData.choice3;
+            const choice4 = questionData.choice4;
+            choice1 = document.getElementById("choice1Text").innerText;
+            choice2 = document.getElementById("choice2Text").innerText;
+            choice3 = document.getElementById("choice3Text").innerText;
+            choice4 = document.getElementById("choice4Text").innerText;
+
+            const questionEl = document.getElementById("QuestionText");
+            if (questionEl) questionEl.innerText = questionText;
+            document.getElementById("12oder16Screen").classList.add("hidden");
+            document.getElementById("BaseScreen").classList.add("hidden");
+            document.getElementById("QuestionScreen").classList.remove("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.remove("hidden");
+            document.getElementById("CategoryScreen").classList.add("hidden");
+            if (data.showAnswer) {
+                const answerEl = document.getElementById("MCAnswerText");
+                if (answerEl) answerEl.innerText = answerText;
+                document.getElementById("AnswerScreen").classList.remove("hidden");
+            }
+        }
+        if (categoryType === "12oder16") {
+            const choice1 = questionData.choice1;
+            const choice2 = questionData.choice2;
+            const choice3 = questionData.choice3;
+            const choice4 = questionData.choice4;
+            const choice5 = questionData.choice5;
+            const choice6 = questionData.choice6;
+            const choice7 = questionData.choice7;
+            const choice8 = questionData.choice8;
+            const choice9 = questionData.choice9;
+            const choice10 = questionData.choice10;
+            const choice11 = questionData.choice11;
+            const choice12 = questionData.choice12;
+            const choice13 = questionData.choice13;
+            const choice14 = questionData.choice14;
+            const choice15 = questionData.choice15;
+            const choice16 = questionData.choice16;
+
+            choice1 = document.getElementById("choice1Text").innerText;
+            choice2 = document.getElementById("choice2Text").innerText;
+            choice3 = document.getElementById("choice3Text").innerText;
+            choice4 = document.getElementById("choice4Text").innerText;
+            choice5 = document.getElementById("choice5Text").innerText;
+            choice6 = document.getElementById("choice6Text").innerText;
+            choice7 = document.getElementById("choice7Text").innerText;
+            choice8 = document.getElementById("choice8Text").innerText;
+            choice9 = document.getElementById("choice9Text").innerText;
+            choice10 = document.getElementById("choice10Text").innerText;
+            choice11 = document.getElementById("choice11Text").innerText;
+            choice12 = document.getElementById("choice12Text").innerText;
+            choice13 = document.getElementById("choice13Text").innerText;
+            choice14 = document.getElementById("choice14Text").innerText;
+            choice15 = document.getElementById("choice15Text").innerText;
+            choice16 = document.getElementById("choice16Text").innerText;
+
             const questionEl = document.getElementById("QuestionText");
             if (questionEl) questionEl.innerText = questionText;
             document.getElementById("BaseScreen").classList.add("hidden");
@@ -83,12 +173,15 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("AnswerScreen").classList.add("hidden");
             document.getElementById("ScoreScreen").classList.add("hidden");
             document.getElementById("MultipleChoice").classList.add("hidden");
+            document.getElementById("CategoryScreen").classList.add("hidden");
+            document.getElementById("12oder16Screen").classList.remove("hidden");
             if (data.showAnswer) {
-                const answerEl = document.getElementById("AnswerText");
+                const answerEl = document.getElementById("MCAnswerText");
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
         }
+
     } catch (err) {
         console.error("Error in onSnapshot:", err);
     }
