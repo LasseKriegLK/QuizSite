@@ -81,10 +81,10 @@ onSnapshot(ref, async (docSnap) => {
             const choice2 = questionData.choice2;
             const choice3 = questionData.choice3;
             const choice4 = questionData.choice4;
-            choice1 = document.getElementById("choice1Text").innerText;
-            choice2 = document.getElementById("choice2Text").innerText;
-            choice3 = document.getElementById("choice3Text").innerText;
-            choice4 = document.getElementById("choice4Text").innerText;
+            choice1 = document.getElementById("mcchoice1Text").innerText;
+            choice2 = document.getElementById("mcchoice2Text").innerText;
+            choice3 = document.getElementById("mcchoice3Text").innerText;
+            choice4 = document.getElementById("mcchoice4Text").innerText;
 
             const questionEl = document.getElementById("QuestionText");
             if (questionEl) questionEl.innerText = questionText;
