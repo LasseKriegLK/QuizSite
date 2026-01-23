@@ -191,7 +191,7 @@ quizDropdown.addEventListener("change", async () => {
                 }, { merge: true });
 
             const answerButton = document.createElement("button");
-            answerButton.textContent = "Show Answer";
+            answerButton.textContent = q.answer;
 
             answerButton.onclick = () =>
                 setDoc(doc(db, "quizState", "current"), {
