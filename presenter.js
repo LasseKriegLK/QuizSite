@@ -40,7 +40,7 @@ onSnapshot(ref, async (docSnap) => {
 
         if (questionId === "category") {
             const categoryName = data.category;
-            categoryName = document.getElementById("CategoryName").innerText;
+            document.getElementById("CategoryName").innerText = categoryName;
             document.getElementById("12oder16Screen").classList.add("hidden");
             document.getElementById("BaseScreen").classList.add("hidden");
             document.getElementById("QuestionScreen").classList.add("hidden");
@@ -96,7 +96,7 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("MultipleChoice").classList.remove("hidden");
             document.getElementById("CategoryScreen").classList.add("hidden");
             if (data.showAnswer) {
-                const answerEl = document.getElementById("MCAnswerText");
+                const answerEl = document.getElementById("AnswerText");
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
@@ -147,7 +147,7 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("CategoryScreen").classList.add("hidden");
             document.getElementById("12oder16Screen").classList.remove("hidden");
             if (data.showAnswer) {
-                const answerEl = document.getElementById("MCAnswerText");
+                const answerEl = document.getElementById("AnswerText");
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
