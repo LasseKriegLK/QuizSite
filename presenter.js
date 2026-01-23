@@ -27,6 +27,7 @@ onSnapshot(ref, async (docSnap) => {
         if (!data) return;
 
         const questionId = data.questionId;
+        const categoryName = data.category;
         if (questionId === "none") {
             document.getElementById("12oder16Screen").classList.add("hidden");
             document.getElementById("BaseScreen").classList.remove("hidden");
@@ -39,8 +40,7 @@ onSnapshot(ref, async (docSnap) => {
         }
 
         if (questionId === "category") {
-            const categoryName = data.category;
-            document.getElementById("CategoryName").innerText = categoryName;
+            document.getElementById("CategoryText").innerText = categoryName;
             document.getElementById("12oder16Screen").classList.add("hidden");
             document.getElementById("BaseScreen").classList.add("hidden");
             document.getElementById("QuestionScreen").classList.add("hidden");
