@@ -38,16 +38,8 @@ onSnapshot(ref, async (docSnap) => {
             return;
         }
 
-        const questionDocSnap = await getDoc(doc(db, "questions", questionId));
-        if (!questionDocSnap.exists()) return;
-
-        const questionData = questionDocSnap.data();
-        const questionText = questionData.question;
-        const answerText = questionData.answer;
-        const categoryType = questionData.categoryType;
-
         if (questionId === "category") {
-            const categoryName = questionData.category;
+            const categoryName = data.category;
             categoryName = document.getElementById("CategoryName").innerText;
             document.getElementById("12oder16Screen").classList.add("hidden");
             document.getElementById("BaseScreen").classList.add("hidden");
@@ -56,7 +48,16 @@ onSnapshot(ref, async (docSnap) => {
             document.getElementById("ScoreScreen").classList.add("hidden");
             document.getElementById("MultipleChoice").classList.add("hidden");
             document.getElementById("CategoryScreen").classList.remove("hidden");
+            return;
         }
+
+        const questionDocSnap = await getDoc(doc(db, "questions", questionId));
+        if (!questionDocSnap.exists()) return;
+
+        const questionData = questionDocSnap.data();
+        const questionText = questionData.question;
+        const answerText = questionData.answer;
+        const categoryType = questionData.categoryType;
 
         if (categoryType === "basic") {
             const questionEl = document.getElementById("QuestionText");
@@ -73,6 +74,7 @@ onSnapshot(ref, async (docSnap) => {
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
+            return;
         }
         if (categoryType === "multipleChoice") {
             const choice1 = questionData.choice1;
@@ -98,6 +100,7 @@ onSnapshot(ref, async (docSnap) => {
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
+            return;
         }
         if (categoryType === "12oder16") {
             const choice1 = questionData.choice1;
@@ -148,6 +151,7 @@ onSnapshot(ref, async (docSnap) => {
                 if (answerEl) answerEl.innerText = answerText;
                 document.getElementById("AnswerScreen").classList.remove("hidden");
             }
+            return;
         }
 
     } catch (err) {
