@@ -119,6 +119,13 @@ document.getElementById("hide Question").addEventListener("click", async () => {
     }, { merge: true });
 });
 
+document.getElementById("show score").addEventListener("click", async () => {
+    await setDoc(doc(db, "quizState", "current"), {
+        questionId: "score",
+        updated_at: serverTimestamp()
+    }, { merge: true });
+});
+
 const quizDropdown = document.getElementById("quizDropdown");
 const questionsContainer = document.getElementById("questionsContainer");
 

@@ -33,6 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+onSnapshot(ref, async (docSnap) => {
+    try {
+        const data = docSnap.data();
+        if (!data) return;
+        const questionId = data.questionId;
+
+        if (questionId === "none" || questionId === "category" || data.categoryType === "score") {
+            document.getElementById('quizFormStandard').style.display = 'none';
+        } else {
+            document.getElementById('quizFormStandard').style.display = 'block';
+        }
+    } catch (error) {
+        console.error("Error fetching quiz state:", error);
+    }
+});
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const answer = answerEl.value.trim();
@@ -44,6 +60,7 @@ form.addEventListener('submit', async (e) => {
     }, { merge: true });
 
     answerEl.value = "";
+    document.getElementById('quizFormStandard').style.display = 'none';
 });
 
 

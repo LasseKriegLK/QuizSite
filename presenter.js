@@ -51,6 +51,48 @@ onSnapshot(ref, async (docSnap) => {
             return;
         }
 
+        if (questionId === "score") {
+            const data = docSnap.data();
+            const name = data.name;
+            const points = data.points || 0;
+            if (!state.has(name)) {
+                const el = document.createElement('div');
+                el.className = 'answer-item';
+
+                const title = document.createElement('strong');
+                title.textContent = name;
+
+                const answerEl = document.createElement('span');
+                answerEl.className = 'answer';
+                answerEl.textContent = `(Punkte: `;
+
+                const pointsEl = document.createElement('span');
+                pointsEl.className = 'points';
+                pointsEl.textContent = points;
+
+                const close = document.createElement('span');
+                close.textContent = ') ';
+
+                el.append(title, answerEl, pointsEl, close);
+
+                state.set(name, { el, pointsEl, answerEl });
+
+            } else {
+                const item = state.get(name);
+                item.pointsEl.textContent = points;
+                item.answerEl.textContent = `: (Points: `;
+            }
+
+            document.getElementById("12oder16Screen").classList.add("hidden");
+            document.getElementById("BaseScreen").classList.add("hidden");
+            document.getElementById("QuestionScreen").classList.add("hidden");
+            document.getElementById("AnswerScreen").classList.add("hidden");
+            document.getElementById("MultipleChoice").classList.add("hidden");
+            document.getElementById("CategoryScreen").classList.add("hidden");
+            document.getElementById("ScoreScreen").classList.remove("hidden");
+            return;
+        }
+
         const questionDocSnap = await getDoc(doc(db, "questions", questionId));
         if (!questionDocSnap.exists()) return;
 
