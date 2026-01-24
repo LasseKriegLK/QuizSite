@@ -8,8 +8,7 @@ import {
     getDoc,
     setDoc,
     serverTimestamp,
-    getDocs,
-    where
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {

@@ -3,7 +3,8 @@ import {
     getFirestore,
     onSnapshot,
     getDoc,
-    doc
+    doc,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -20,6 +21,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const ref = doc(db, "quizState", "current");
+const state = new Map();
 
 onSnapshot(ref, async (docSnap) => {
     try {
