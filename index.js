@@ -23,6 +23,7 @@ const db = getFirestore(app);
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
 const username = sessionStorage.getItem("username");
+const ref = doc(db, "quizState", "current");
 
 document.addEventListener("DOMContentLoaded", () => {
 
