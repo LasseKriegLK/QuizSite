@@ -5,6 +5,7 @@ import {
     addDoc,
     orderBy,
     limit,
+    query,
     serverTimestamp,
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -22,44 +23,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const form = document.getElementById('getränkeForm');
-const username = sessionStorage.getItem("username");
-const getraenkeRef = collection(db, "getränke");
-console.log("Logged in as:", username);
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    const form = document.getElementById('getränkeForm');
+    const logoutButton = document.getElementById("logoutButton");
+    const gesamtEl = document.getElementById("gesamtMenge");
+    const listeEl = document.getElementById("letzteEintraege");
+
+    const username = sessionStorage.getItem("username");
 
     if (!username) {
         window.location.href = "/QuizSite/login.html";
-    } else {
-        document.getElementById("userDisplay").innerText =
-            `Willkommen, ${username}!`;
+        return;
     }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logoutButton");
+    document.getElementById("userDisplay").innerText =
+        `Willkommen, ${username}!`;
 
     logoutButton.addEventListener("click", () => {
         sessionStorage.removeItem("username");
         window.location.href = "/QuizSite/login.html";
     });
-});
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const trunk = document.getElementById("trunk").value.trim();
-    const menge = document.getElementById("menge").value.trim();
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    await addDoc(collection(db, "getränke"), {
-        name: username,
-        trunk: trunk,
-        menge: menge,
-        updated_at: serverTimestamp()
+        const trunk = document.getElementById("trunk").value.trim();
+        const menge = document.getElementById("menge").value.trim();
+
+        await addDoc(getraenkeRef, {
+            name: username,
+            trunk: trunk,
+            menge: Number(menge),
+            updated_at: serverTimestamp()
+        });
     });
 
-    trunk.value = "";
-    menge.value = "";
 });
 
 const gesamtEl = document.getElementById("gesamtMenge");
