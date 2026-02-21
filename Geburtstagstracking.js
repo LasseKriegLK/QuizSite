@@ -56,7 +56,7 @@ form.addEventListener('submit', async (e) => {
         trunk: trunk,
         menge: menge,
         updated_at: serverTimestamp()
-    }, { merge: true });
+    });
 
     trunk.value = "";
     menge.value = "";
@@ -73,10 +73,10 @@ onSnapshot(getraenkeRef, (snapshot) => {
         gesamt += Number(data.menge) || 0;
     });
 
-    gesamtEl.innerText = gesamt;
+    gesamtEl.innerText = gesamt / 1000 + "Liter";
 });
 
-// Letzte 3 Einträge nach Zeit sortiert
+
 const letzteQuery = query(
     getraenkeRef,
     orderBy("updated_at", "desc"),

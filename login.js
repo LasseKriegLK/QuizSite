@@ -11,5 +11,5 @@ form.addEventListener("submit", (e) => {
     }
 
     sessionStorage.setItem("username", username);
-    window.location.href = "/QuizSite/index.html";
+    window.location.href = "/QuizSite/Geburtstagstracking.html";
 });
