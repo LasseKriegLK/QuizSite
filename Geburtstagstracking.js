@@ -23,6 +23,42 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const getraenkeRef = collection(db, "getränke");
+const alleGetraenke = [
+    "Oberdorfer Helles",
+    "Radeberger Pilsner",
+    "Corona",
+    "San Miguel",
+    "Salitos",
+    "Espresso Martini",
+    "Pornstar Martini",
+    "Wein",
+    "Spritz",
+    "Hugo",
+    "Lillet",
+    "Mojito",
+    "Flavoured Mojito",
+    "Whiskey Sour",
+    "Pisco Sour",
+    "Aperol Sour",
+    "Bulldog",
+    "Margarita",
+    "Frozen Margarita",
+    "Tequila Sunrise",
+    "Paloma",
+    "Pink Dragon Agave",
+    "Pina Colada",
+    "Swimming Pool",
+    "Strawberry Colada",
+    "Ed von Schleck",
+    "Touch Down",
+    "Sex on the Beach",
+    "Mule",
+    "Red Gin Melon",
+    "Cuba Libre",
+    "Dark & Stormy",
+    "Mai Tai",
+    "Zombie"
+];
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -51,7 +87,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const trunkInput = document.getElementById("trunk");
         const mengeInput = document.getElementById("menge");
-
+        if (trunkInput.value.trim() === "Corona" || trunkInput.value.trim() === "Oberdorfer Helles" || trunkInput.value.trim() === "Radeberger Pilsner" || trunkInput.value.trim() === "San Miguel" || trunkInput.value.trim() === "Salitos") {
+            await addDoc(getraenkeRef, {
+                name: username,
+                trunk: trunkInput.value.trim(),
+                menge: Number(mengeInput.value.trim()) / 2,
+                updated_at: serverTimestamp()
+            });
+        }
         await addDoc(getraenkeRef, {
             name: username,
             trunk: trunkInput.value.trim(),
@@ -70,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
             gesamt += Number(doc.data().menge) || 0;
         });
 
-        gesamtEl.innerText = (gesamt / 1000).toFixed(2) + " Liter";
+        gesamtEl.innerText = (gesamt / 1000).toFixed(2);
     });
 
     // Letzte 3
@@ -88,6 +131,37 @@ document.addEventListener("DOMContentLoaded", () => {
             const li = document.createElement("li");
             li.innerText = `${data.name}: ${data.trunk} (${data.menge} ml)`;
             listeEl.appendChild(li);
+        });
+    });
+    const nichtListeEl = document.getElementById("nichtGetrunkenListe");
+
+    onSnapshot(getraenkeRef, (snapshot) => {
+
+        let gesamt = 0;
+        const getrunkeneSorten = new Set();
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            gesamt += Number(data.menge) || 0;
+
+            if (data.trunk) {
+                getrunkeneSorten.add(data.trunk);
+            }
+        });
+
+        gesamtEl.innerText = (gesamt / 1000).toFixed(2) + " Liter";
+
+        // ❗ Jetzt Vergleich
+        const nochNicht = alleGetraenke.filter(
+            drink => !getrunkeneSorten.has(drink)
+        );
+
+        nichtListeEl.innerHTML = "";
+
+        nochNicht.forEach(drink => {
+            const li = document.createElement("li");
+            li.innerText = drink;
+            nichtListeEl.appendChild(li);
         });
     });
 

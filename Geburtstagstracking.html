@@ -59,16 +59,54 @@
         <span id="userDisplay"></span>
         <button id="logoutButton">Abmelden</button>
     </div>
-    <h3>Gesamtmenge: <span id="gesamtMenge">0,0</span> Liter</h3>
+    <h3>GesamtScore: <span id="gesamtMenge">0,0</span> Liter</h3>
 
     <h3>Letzte 3 Einträge</h3>
     <ul id="letzteEintraege"></ul>
 
     <form id="getränkeForm">
-        <input id="trunk" placeholder="Dein Getränk" required />
+        <select id="trunk" required>
+            <option value="">Bitte wählen</option>
+            <option value="Oberdorfer Helles">Oberdorfer Helles</option>
+            <option value="Radeberger Pilsner">Radeberger Pilsner</option>
+            <option value="Corona">Corona</option>
+            <option value="San Miguel">San Miguel</option>
+            <option value="Salitos">Salitos</option>
+            <option value="Espresso Martini">Espresso Martini</option>
+            <option value="Pornstar Martini">Pornstar Martini</option>
+            <option value="Wein">Wein</option>
+            <option value="Spritz">Spritz</option>
+            <option value="Hugo">Hugo</option>
+            <option value="Lillet">Lillet</option>
+            <option value="Mojito">Mojito</option>
+            <option value="Flavoured Mojito">Flavoured Mojito</option>
+            <option value="Whiskey Sour">Whiskey Sour</option>
+            <option value="Pisco Sour">Pisco Sour</option>
+            <option value="Aperol Sour">Aperol Sour</option>
+            <option value="Bulldog">Bulldog</option>
+            <option value="Margarita">Margarita</option>
+            <option value="Frozen Margarita">Frozen Margarita</option>
+            <option value="Tequila Sunrise">Tequila Sunrise</option>
+            <option value="Paloma">Paloma</option>
+            <option value="Pink Dragon Agave">Pink Dragon Agave</option>
+            <option value="Pina Colada">Pina Colada</option>
+            <option value="Swimming Pool">Swimming Pool</option>
+            <option value="Strawberry Colada">Strawberry Colada</option>
+            <option value="Ed von Schleck">Ed von Schleck</option>
+            <option value="Touch Down">Touch Down</option>
+            <option value="Sex on the Beach">Sex on the Beach</option>
+            <option value="Mule">Mule</option>
+            <option value="Red Gin Melon">Red Gin Melon</option>
+            <option value="Cuba Libre">Cuba Libre</option>
+            <option value="Dark & Stormy">Dark & Stormy</option>
+            <option value="Mai Tai">Mai Tai</option>
+            <option value="Zombie">Zombie</option>
+        </select>
         <input id="menge" placeholder="Menge in ml" required />
         <button type="submit">Speichern</button>
     </form>
+    <h3>Noch nicht getrunkene Drinks</h3>
+    <ul id="nichtGetrunken"></ul>
 
     <script type="module" src="Geburtstagstracking.js"></script>
 </body>
