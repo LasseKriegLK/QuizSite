@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        gesamtEl.innerText = (gesamt / 1000).toFixed(2) + " Liter";
+        gesamtEl.innerText = (gesamt / 1000).toFixed(2);
 
         // ❗ Jetzt Vergleich
         const nochNicht = alleGetraenke.filter(
