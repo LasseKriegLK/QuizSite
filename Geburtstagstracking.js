@@ -95,13 +95,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 updated_at: serverTimestamp()
             });
         }
-        await addDoc(getraenkeRef, {
-            name: username,
-            trunk: trunkInput.value.trim(),
-            menge: Number(mengeInput.value.trim()),
-            updated_at: serverTimestamp()
-        });
-
+        else {
+            await addDoc(getraenkeRef, {
+                name: username,
+                trunk: trunkInput.value.trim(),
+                menge: Number(mengeInput.value.trim()),
+                updated_at: serverTimestamp()
+            });
+        }
         trunkInput.value = "";
         mengeInput.value = "";
     });
@@ -133,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
             listeEl.appendChild(li);
         });
     });
-    const nichtListeEl = document.getElementById("nichtGetrunkenListe");
+    const nichtListeEl = document.getElementById("nichtGetrunken");
 
     onSnapshot(getraenkeRef, (snapshot) => {
 
