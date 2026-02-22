@@ -165,78 +165,52 @@ document.addEventListener("DOMContentLoaded", () => {
             nichtListeEl.appendChild(li);
         });
     });
-    const userTablesEl = document.getElementById("userTables");
+    userTablesEl.innerHTML = "";
 
-    onSnapshot(getraenkeRef, (snapshot) => {
+    const sortedUsers = Object.entries(userData)
+        .sort((a, b) => b[1].total - a[1].total);
 
-        // 1️⃣ Daten nach User gruppieren
-        const userData = {};
+    sortedUsers.forEach(([name, data], index) => {
 
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const name = data.name;
-            const liter = (Number(data.menge) || 0) / 1000;
+        const userBlock = document.createElement("div");
+        userBlock.style.marginBottom = "30px";
 
-            if (!userData[name]) {
-                userData[name] = {
-                    drinks: {},
-                    total: 0
-                };
-            }
+        const title = document.createElement("h3");
 
-            // Getränk summieren
-            if (!userData[name].drinks[data.trunk]) {
-                userData[name].drinks[data.trunk] = 0;
-            }
+        // 🏆 Platzierung anzeigen
+        title.innerText = `#${index + 1} ${name}`;
+        userBlock.appendChild(title);
 
-            userData[name].drinks[data.trunk] += liter;
-            userData[name].total += liter;
-        });
+        const table = document.createElement("table");
+        table.border = "1";
+        table.style.borderCollapse = "collapse";
+        table.style.marginBottom = "10px";
 
-        // 2️⃣ Anzeige neu aufbauen
-        userTablesEl.innerHTML = "";
+        const headerRow = document.createElement("tr");
+        headerRow.innerHTML = `
+        <th>Getränk</th>
+        <th>Liter</th>
+    `;
+        table.appendChild(headerRow);
 
-        Object.keys(userData).forEach(name => {
-
-            const userBlock = document.createElement("div");
-            userBlock.style.marginBottom = "30px";
-
-            const title = document.createElement("h3");
-            title.innerText = name;
-            userBlock.appendChild(title);
-
-            const table = document.createElement("table");
-            table.border = "1";
-            table.style.borderCollapse = "collapse";
-            table.style.marginBottom = "10px";
-
-            const headerRow = document.createElement("tr");
-            headerRow.innerHTML = `
-            <th>Getränk</th>
-            <th>Liter</th>
+        Object.entries(data.drinks).forEach(([drink, liter]) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${drink}</td>
+            <td>${liter.toFixed(2)}</td>
         `;
-            table.appendChild(headerRow);
-
-            Object.entries(userData[name].drinks).forEach(([drink, liter]) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                <td>${drink}</td>
-                <td>${liter.toFixed(2)}</td>
-            `;
-                table.appendChild(row);
-            });
-
-            userBlock.appendChild(table);
-
-            const totalText = document.createElement("strong");
-            totalText.innerText =
-                `Gesamt: ${userData[name].total.toFixed(2)} Liter`;
-
-            userBlock.appendChild(totalText);
-
-            userTablesEl.appendChild(userBlock);
+            table.appendChild(row);
         });
 
+        userBlock.appendChild(table);
+
+        const totalText = document.createElement("strong");
+        totalText.innerText =
+            `Gesamt: ${data.total.toFixed(2)} Liter`;
+
+        userBlock.appendChild(totalText);
+
+        userTablesEl.appendChild(userBlock);
     });
 
 });
