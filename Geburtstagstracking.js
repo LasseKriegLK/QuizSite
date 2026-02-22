@@ -165,10 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nichtListeEl.appendChild(li);
         });
     });
-    const sortedUsers = Object.entries(userData)
-        .sort((a, b) =>
-            a[0].toLowerCase().localeCompare(b[0].toLowerCase())
-        );
+
     const userTablesEl = document.getElementById("userTables");
 
     onSnapshot(getraenkeRef, (snapshot) => {
@@ -199,6 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 2️⃣ Anzeige neu aufbauen
         userTablesEl.innerHTML = "";
+        const sortedUsers = Object.entries(userData)
+            .sort((a, b) =>
+                a[0].toLowerCase().localeCompare(b[0].toLowerCase())
+            );
 
         sortedUsers.forEach(name => {
 
