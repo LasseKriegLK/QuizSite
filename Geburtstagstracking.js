@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 a[0].toLowerCase().localeCompare(b[0].toLowerCase())
             );
 
-        sortedUsers.forEach(name => {
+        sortedUsers.forEach(([name, data]) => {
 
             const userBlock = document.createElement("div");
             userBlock.style.marginBottom = "30px";
@@ -217,17 +217,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const headerRow = document.createElement("tr");
             headerRow.innerHTML = `
-            <th>Getränk</th>
-            <th>Liter</th>
-        `;
+        <th>Getränk</th>
+        <th>Liter</th>
+    `;
             table.appendChild(headerRow);
 
-            Object.entries(userData[name].drinks).forEach(([drink, liter]) => {
+            Object.entries(data.drinks).forEach(([drink, liter]) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                <td>${drink}</td>
-                <td>${liter.toFixed(2)}</td>
-            `;
+            <td>${drink}</td>
+            <td>${liter.toFixed(2)}</td>
+        `;
                 table.appendChild(row);
             });
 
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const totalText = document.createElement("strong");
             totalText.innerText =
-                `Gesamt: ${userData[name].total.toFixed(2)} Liter`;
+                `Gesamt: ${data.total.toFixed(2)} Liter`;
 
             userBlock.appendChild(totalText);
 
