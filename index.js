@@ -23,6 +23,7 @@ const db = getFirestore(app);
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
 const username = sessionStorage.getItem("username");
+setCookie("username", username, 1);
 const ref = doc(db, "quizState", "current");
 console.log("Logged in as:", username);
 
