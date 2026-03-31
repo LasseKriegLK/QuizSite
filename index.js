@@ -27,14 +27,41 @@ const ref = doc(db, "quizState", "current");
 console.log("Logged in as:", username);
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    if (!username) {
+    if (!username && getCookie("username") != null) {
+        username = getCookie("username");
+        sessionStorage.setItem("username", username);
+        console.log("Logged in as:", username);
+        document.getElementById("userDisplay").innerText =
+            `Willkommen, ${username}!`;
+    }
+    if (!username && getCookie("username") == null) {
         window.location.href = "/QuizSite/login.html";
-    } else {
+    }
+    if (username && getCookie("username") == null) {
+        setCookie("username", username, 1);
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }
 });
+function setCookie(name, value, daysToLive) {
+    const date = new Date();
+    date.setTime(date.getTime() + (daysToLive * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value}; ${expires}; path=/`
+}
+
+function getCookie(name) {
+    const cDecoded = decodeURIComponent(document.cookie);
+    const cArray = cDecoded.split("; ");
+    let result = null;
+
+    cArray.forEach(element => {
+        if (element.indexOf(name) == 0) {
+            result = element.substring(name.length + 1)
+        }
+    })
+    return result;
+}
 
 onSnapshot(ref, async (docSnap) => {
     try {
