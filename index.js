@@ -24,6 +24,8 @@ const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
 const username = sessionStorage.getItem("username") || getCookie("username") || null;
 const ref = doc(db, "quizState", "current");
+document.getElementById("userDisplay").innerText =
+    `Willkommen, ${username}!`;
 console.log("Logged in as:", username);
 
 document.addEventListener("DOMContentLoaded", () => {
