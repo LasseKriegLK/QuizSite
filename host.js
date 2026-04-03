@@ -107,8 +107,13 @@ onSnapshot(q, (querySnapshot) => {
         render(docSnap);
     });
     container.innerHTML = '';
-    state.forEach(({ el }) => {
-        container.appendChild(el);
+
+    querySnapshot.forEach((docSnap) => {
+        const name = docSnap.data().name;
+        const item = state.get(name);
+        if (item) {
+            container.appendChild(item.el);
+        }
     });
 });
 
