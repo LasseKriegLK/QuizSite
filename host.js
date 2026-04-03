@@ -98,7 +98,8 @@ function render(docSnap) {
 
 
 const q = query(
-    collection(db, "answers")
+    collection(db, "answers"),
+    orderBy("updated_at", "desc")
 );
 
 onSnapshot(q, (querySnapshot) => {
@@ -125,96 +126,4 @@ document.getElementById("unlock").addEventListener("click", async () => {
     }, { merge: true });
 });
 
-document.getElementById("show score").addEventListener("click", async () => {
-    await setDoc(doc(db, "quizState", "current"), {
-        questionId: "score",
-        updated_at: serverTimestamp()
-    }, { merge: true });
-});
 
-const quizDropdown = document.getElementById("quizDropdown");
-const questionsContainer = document.getElementById("questionsContainer");
-
-async function loadQuizzes() {
-    const quizzesSnapshot = await getDocs(collection(db, "Quizzes"));
-    quizzesSnapshot.forEach(docSnap => {
-        const quizId = docSnap.id;
-        const option = document.createElement("option");
-        option.value = quizId;
-        option.textContent = quizId;
-        quizDropdown.appendChild(option);
-    });
-}
-
-loadQuizzes();
-
-quizDropdown.addEventListener("change", async () => {
-    const quizId = quizDropdown.value;
-    questionsContainer.innerHTML = "";
-
-    if (!quizId) return;
-
-    const quizDocRef = doc(db, "Quizzes", quizId);
-    const quizDocSnap = await getDoc(quizDocRef);
-
-    if (!quizDocSnap.exists()) return;
-
-    const quizData = quizDocSnap.data();
-
-    const categoriesSnapshot = await getDocs(collection(db, "Quizzes", quizId, "Categories"));
-
-    for (const categoryDoc of categoriesSnapshot.docs) {
-        const categoryName = categoryDoc.id;
-
-
-        const categoryButton = document.createElement("button");
-        categoryButton.textContent = categoryName;
-
-        categoryButton.onclick = () => {
-            setDoc(doc(db, "quizState", "current"), {
-                category: categoryName,
-                questionId: "category",
-                updated_at: serverTimestamp()
-            }, { merge: true });
-        };
-
-        questionsContainer.appendChild(categoryButton);
-
-        const questionsSnapshot = await getDocs(
-            collection(db, "Quizzes", quizId, "Categories", categoryName, "Questions")
-        );
-
-        const questionsArray = [];
-        questionsSnapshot.forEach(qDoc => {
-            const data = qDoc.data();
-            questionsArray.push({ ...data, id: qDoc.id });
-        });
-
-        questionsArray.sort((a, b) => a.created_at?.seconds - b.created_at?.seconds);
-
-        questionsArray.forEach(q => {
-            const questionButton = document.createElement("button");
-            questionButton.textContent = q.question;
-
-            questionButton.onclick = () =>
-                setDoc(doc(db, "quizState", "current"), {
-                    questionId: q.Key,
-                    updated_at: serverTimestamp(),
-                    showAnswer: false
-                }, { merge: true });
-
-            const answerButton = document.createElement("button");
-            answerButton.textContent = q.answer;
-
-            answerButton.onclick = () =>
-                setDoc(doc(db, "quizState", "current"), {
-                    questionId: q.Key,
-                    updated_at: serverTimestamp(),
-                    showAnswer: true
-                }, { merge: true });
-
-            questionsContainer.appendChild(questionButton);
-            questionsContainer.appendChild(answerButton);
-        });
-    }
-});

@@ -70,7 +70,7 @@ onSnapshot(ref, async (docSnap) => {
         if (aP === "false") {
             document.getElementById('quizFormStandard').style.display = 'none';
         } else {
-            document.getElementById('quizFormStandard').style.display = 'block';
+            document.getElementById('quizFormStandard').style.display = 'inline-block';
         }
     } catch (error) {
         console.error("Error fetching quiz state:", error);
@@ -88,19 +88,16 @@ form.addEventListener('submit', async (e) => {
     }, { merge: true });
 
     answerEl.value = "";
-    document.getElementById('quizFormStandard').style.display = 'none';
 });
 
 
 document.addEventListener("visibilitychange", () => {
-    if (username) {
-        setDoc(doc(db, "answers", username), {
-            updated_at: serverTimestamp(),
-            status: document.visibilityState === "visible" ? "online" : "offline"
-        }, {
-            merge: true
-        });
-    }
+    setDoc(doc(db, "answers", username), {
+        updated_at: serverTimestamp(),
+        status: document.visibilityState === "hidden" ? "!! offline !!" : "online"
+    }, {
+        merge: true
+    });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
