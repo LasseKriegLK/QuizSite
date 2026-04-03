@@ -28,7 +28,7 @@ const ref = doc(db, "quizState", "current");
 console.log("Logged in as:", username);
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (!username && getCookie("username") == null) {
+    if (!username && !getCookie("username")) {
         window.location.href = "/QuizSite/login.html";
     }
     if (!username && getCookie("username") != null) {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }
-    if (username && getCookie("username") == null) {
+    if (username && !getCookie("username")) {
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }
@@ -93,20 +93,17 @@ form.addEventListener('submit', async (e) => {
 
 document.addEventListener("visibilitychange", () => {
     setDoc(doc(db, "answers", username), {
-        updated_at: serverTimestamp(),
         status: document.visibilityState === "hidden" ? "!! offline !!" : "online"
     }, {
         merge: true
     });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logoutButton");
+const logoutButton = document.getElementById("logoutButton");
 
-    logoutButton.addEventListener("click", () => {
+logoutButton.addEventListener("click", () => {
         sessionStorage.removeItem("username");
         setCookie("username", "", -1);
         username = null;
         window.location.href = "/QuizSite/login.html";
     });
-});
