@@ -111,9 +111,16 @@ onSnapshot(q, (querySnapshot) => {
     });
 });
 
-document.getElementById("hide Question").addEventListener("click", async () => {
+document.getElementById("lock").addEventListener("click", async () => {
     await setDoc(doc(db, "quizState", "current"), {
-        questionId: "none",
+        answerPossible: "false",
+        updated_at: serverTimestamp()
+    }, { merge: true });
+});
+
+document.getElementById("unlock").addEventListener("click", async () => {
+    await setDoc(doc(db, "quizState", "current"), {
+        answerPossible: "true",
         updated_at: serverTimestamp()
     }, { merge: true });
 });

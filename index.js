@@ -28,18 +28,15 @@ const ref = doc(db, "quizState", "current");
 console.log("Logged in as:", username);
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (!username && getCookie("username") != null) {
-        username = getCookie("username");
-        sessionStorage.setItem("username", username);
-        console.log("Logged in as:", username);
-        document.getElementById("userDisplay").innerText =
-            `Willkommen, ${username}!`;
-    }
     if (!username && getCookie("username") == null) {
         window.location.href = "/QuizSite/login.html";
     }
+    if (!username && getCookie("username") != null) {
+        username = getCookie("username");
+        document.getElementById("userDisplay").innerText =
+            `Willkommen, ${username}!`;
+    }
     if (username && getCookie("username") == null) {
-        setCookie("username", username, 1);
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }
@@ -68,9 +65,9 @@ onSnapshot(ref, async (docSnap) => {
     try {
         const data = docSnap.data();
         if (!data) return;
-        const questionId = data.questionId;
+        const aP = data.answerPossible;
 
-        if (questionId === "none" || questionId === "category" || data.categoryType === "score") {
+        if (aP === "false") {
             document.getElementById('quizFormStandard').style.display = 'none';
         } else {
             document.getElementById('quizFormStandard').style.display = 'block';
@@ -111,6 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     logoutButton.addEventListener("click", () => {
         sessionStorage.removeItem("username");
+        setCookie("username", "", -1);
+        username = null;
         window.location.href = "/QuizSite/login.html";
     });
 });
