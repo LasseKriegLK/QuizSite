@@ -22,8 +22,7 @@ const db = getFirestore(app);
 
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
-const username = sessionStorage.getItem("username");
-setCookie("username", username, 1);
+const username = sessionStorage.getItem("username") || getCookie("username") || null;
 const ref = doc(db, "quizState", "current");
 console.log("Logged in as:", username);
 
@@ -37,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `Willkommen, ${username}!`;
     }
     if (username && !getCookie("username")) {
+        setCookie("username", username, 1);
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }
@@ -102,8 +102,7 @@ document.addEventListener("visibilitychange", () => {
 const logoutButton = document.getElementById("logoutButton");
 
 logoutButton.addEventListener("click", () => {
-        sessionStorage.removeItem("username");
-        setCookie("username", "", -1);
-        username = null;
-        window.location.href = "/QuizSite/login.html";
-    });
+    sessionStorage.removeItem("username");
+    setCookie("username", "", -1);
+    window.location.href = "/QuizSite/login.html";
+});
