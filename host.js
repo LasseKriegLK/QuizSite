@@ -84,6 +84,22 @@ function render(docSnap) {
         statusEl.className = 'status ' + status;
         statusEl.textContent = ` [${status}]`;
 
+        const lock = document.createElement('button');
+        lock.textContent = 'Lock';
+        lock.onclick = async () => {
+            await setDoc(doc(db, "answers", name), {
+                quizState: "locked"
+            }, { merge: true });
+        }
+
+        const unlock = document.createElement('button');
+        unlock.textContent = 'Unlock';
+        unlock.onclick = async () => {
+            await setDoc(doc(db, "answers", name), {
+                quizState: "unlocked"
+            }, { merge: true });
+        }
+
         el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
 
         state.set(name, { el, pointsEl, answerEl, statusEl });
@@ -118,17 +134,23 @@ onSnapshot(q, (querySnapshot) => {
 });
 
 document.getElementById("lock").addEventListener("click", async () => {
-    await setDoc(doc(db, "quizState", "current"), {
-        answerPossible: "false",
-        updated_at: serverTimestamp()
-    }, { merge: true });
+    const querySnapshot = await getDocs(collection(db, "answers"));
+    querySnapshot.forEach(async (docSnap) => {
+        await setDoc(doc(db, "answers", docSnap.data().name), {
+            quizState: "locked",
+            updated_at: serverTimestamp()
+        }, { merge: true });
+    });
 });
 
 document.getElementById("unlock").addEventListener("click", async () => {
-    await setDoc(doc(db, "quizState", "current"), {
-        answerPossible: "true",
-        updated_at: serverTimestamp()
-    }, { merge: true });
+    const querySnapshot = await getDocs(collection(db, "answers"));
+    querySnapshot.forEach(async (docSnap) => {
+        await setDoc(doc(db, "answers", docSnap.data().name), {
+            quizState: "unlocked",
+            updated_at: serverTimestamp()
+        }, { merge: true });
+    });
 });
 
 

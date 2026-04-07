@@ -23,7 +23,7 @@ const db = getFirestore(app);
 const form = document.getElementById('quizFormStandard');
 const answerEl = document.getElementById('answer');
 const username = sessionStorage.getItem("username") || getCookie("username") || null;
-const ref = doc(db, "quizState", "current");
+const ref = doc(db, "answers", username);
 document.getElementById("userDisplay").innerText =
     `Willkommen, ${username}!`;
 console.log("Logged in as:", username);
@@ -67,9 +67,9 @@ onSnapshot(ref, async (docSnap) => {
     try {
         const data = docSnap.data();
         if (!data) return;
-        const aP = data.answerPossible;
+        const aP = data.quizState;
 
-        if (aP === "false") {
+        if (aP === "locked") {
             document.getElementById('quizFormStandard').style.display = 'none';
         } else {
             document.getElementById('quizFormStandard').style.display = 'inline-block';
@@ -86,6 +86,7 @@ form.addEventListener('submit', async (e) => {
     await setDoc(doc(db, "answers", username), {
         name: username,
         answer,
+        quizState: "locked",
         updated_at: serverTimestamp()
     }, { merge: true });
 
