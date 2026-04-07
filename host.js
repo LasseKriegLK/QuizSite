@@ -8,7 +8,8 @@ import {
     getDoc,
     setDoc,
     serverTimestamp,
-    orderBy
+    orderBy,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -84,17 +85,17 @@ function render(docSnap) {
         statusEl.className = 'status ' + status;
         statusEl.textContent = ` [${status}]`;
 
-        const lock = document.createElement('button');
-        lock.textContent = 'Lock';
-        lock.onclick = async () => {
+        const lockEl = document.createElement('button');
+        lockEl.textContent = 'Lock';
+        lockEl.onclick = async () => {
             await setDoc(doc(db, "answers", name), {
                 quizState: "locked"
             }, { merge: true });
         }
 
-        const unlock = document.createElement('button');
-        unlock.textContent = 'Unlock';
-        unlock.onclick = async () => {
+        const unlockEl = document.createElement('button');
+        unlockEl.textContent = 'Unlock';
+        unlockEl.onclick = async () => {
             await setDoc(doc(db, "answers", name), {
                 quizState: "unlocked"
             }, { merge: true });
@@ -119,10 +120,11 @@ const q = query(
 );
 
 onSnapshot(q, (querySnapshot) => {
+    container.innerHTML = '';
     querySnapshot.forEach((docSnap) => {
         render(docSnap);
     });
-    container.innerHTML = '';
+
 
     querySnapshot.forEach((docSnap) => {
         const name = docSnap.data().name;
