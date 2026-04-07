@@ -101,7 +101,7 @@ function render(docSnap) {
             }, { merge: true });
         }
 
-        el.append(title, answerEl, pointsEl, close, plus, minus, statusEl, lock, unlock);
+        el.append(title, answerEl, pointsEl, close, plus, minus, statusEl, lockEl, unlockEl);
 
         state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
