@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `Willkommen, ${username}!`;
     }
     if (username && !getCookie("username")) {
-        setCookie("username", username, 1);
+        setCookie("username", username, 10000);
         document.getElementById("userDisplay").innerText =
             `Willkommen, ${username}!`;
     }

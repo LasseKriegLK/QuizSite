@@ -100,7 +100,7 @@ function render(docSnap) {
             }, { merge: true });
         }
 
-        el.append(title, answerEl, pointsEl, close, plus, minus, statusEl);
+        el.append(title, answerEl, pointsEl, close, plus, minus, statusEl, lock, unlock);
 
         state.set(name, { el, pointsEl, answerEl, statusEl });
     } else {
@@ -135,22 +135,28 @@ onSnapshot(q, (querySnapshot) => {
 
 document.getElementById("lock").addEventListener("click", async () => {
     const querySnapshot = await getDocs(collection(db, "answers"));
-    querySnapshot.forEach(async (docSnap) => {
-        await setDoc(doc(db, "answers", docSnap.data().name), {
+
+    const updates = querySnapshot.docs.map((docSnap) =>
+        setDoc(doc(db, "answers", docSnap.id), {
             quizState: "locked",
             updated_at: serverTimestamp()
-        }, { merge: true });
-    });
+        }, { merge: true })
+    );
+
+    await Promise.all(updates);
 });
 
 document.getElementById("unlock").addEventListener("click", async () => {
     const querySnapshot = await getDocs(collection(db, "answers"));
-    querySnapshot.forEach(async (docSnap) => {
-        await setDoc(doc(db, "answers", docSnap.data().name), {
+
+    const updates = querySnapshot.docs.map((docSnap) =>
+        setDoc(doc(db, "answers", docSnap.id), {
             quizState: "unlocked",
             updated_at: serverTimestamp()
-        }, { merge: true });
-    });
+        }, { merge: true })
+    );
+
+    await Promise.all(updates);
 });
 
 
